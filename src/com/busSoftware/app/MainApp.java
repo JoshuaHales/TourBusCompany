@@ -22,6 +22,7 @@ public class MainApp {
             System.out.println("-2 Delete Existing Bus.");
             System.out.println("-3 Edit Existing Buses..");
             System.out.println("-4 View All Buses.");
+            System.out.println("-5 Exit Tour Bus Company.");
             System.out.println();
         
             System.out.print("-Enter Option:");
@@ -58,6 +59,7 @@ public class MainApp {
         }
         //Once Not Equals To 5 Programes Runs Else Stops:
         while (opt != 5);
+        System.out.println("-Exiting App.");
     }
     
     //Code For Telling If Bus Was Created Or Not USing A Boolean In The Model Class:
