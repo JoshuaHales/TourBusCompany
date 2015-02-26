@@ -18,28 +18,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 // Main BusTableGateway Class Code:
-public class BusTableGateway {
+public class GarageTableGateway {
     private Connection mConnection;
     
     //Code For Linking For Creating The Tables That Get The Info From phpmyadmin To Print Out Onto The Screen:
     //Static Finale Constant variables:
-    private static final String TABLE_NAME = "Buses";
-    private static final String COLUMN_BUS_ID = "busID";
-    private static final String COLUMN_REGISTRATION_NO = "registrationNo";
-    private static final String COLUMN_BUS_MAKE = "busMake";
-    private static final String COLUMN_BUS_MODEL = "busModel";
-    private static final String COLUMN_BUS_SEATS = "busSeats";
-    private static final String COLUMN_BUS_ENGINE_SIZE = "busEngineSize";
-    private static final String COLUMN_PURCHASE_DATE = "purchaseDate";
-    private static final String COLUMN_DUE_SERVICE_DATE = "dueServiceDate";
+    private static final String TABLE_NAME = "garages";
     private static final String COLUMN_GARAGE_ID = "garageID";
+    private static final String COLUMN_GARAGE_NAME = "garageName";
+    private static final String COLUMN_GARAGE_ADDRESS = "garageAddress";
+    private static final String COLUMN_GARAGE_PHONE_NO = "garagePhoneNo";
+    private static final String COLUMN_MANAGER_NAME = "managerName";
     
-    public BusTableGateway( Connection connection) {
+    public GarageTableGateway( Connection connection) {
         mConnection = connection;
     }
     
     //Insert Code:
-    public int insertBus(String rn, String bmk, String bml, int bs, String bes, String pd, String dsd, int gid) throws SQLException {
+    public int insertGarage(String gn, String ga, int gpn, String mn) throws SQLException {
         // The SQL Query To Execute
         String query;
         //The Java.sql.PreparedStatement Object Used To Execute The SQL Query:
@@ -50,48 +46,18 @@ public class BusTableGateway {
         
         // The Required SQL INSERT Statement With Place Holders For The Values To Be Inserted Into The Database:
         query = "INSERT INTO " + TABLE_NAME + " (" +
-                COLUMN_REGISTRATION_NO + ", " +
-                COLUMN_BUS_MAKE + ", " +
-                COLUMN_BUS_MODEL + ", " +
-                COLUMN_BUS_SEATS + ", " +
-                COLUMN_BUS_ENGINE_SIZE + ", " +
-                COLUMN_PURCHASE_DATE + ", " +
-                COLUMN_DUE_SERVICE_DATE + ", " +
-                COLUMN_GARAGE_ID +
-                ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        
-        //Code To Get Date Values To Work:
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        Date purchaseDate;
-        try {
-            purchaseDate = format.parse(pd);
-        } 
-        catch (ParseException ex) {
-            purchaseDate = new Date();
-        }
-        Date serviceDate;
-        try {
-            serviceDate = format.parse(dsd);
-        } 
-        catch (ParseException ex) {
-            serviceDate = new Date();
-        }
+                COLUMN_GARAGE_NAME + ", " +
+                COLUMN_GARAGE_ADDRESS + ", " +
+                COLUMN_GARAGE_PHONE_NO + ", " +
+                COLUMN_MANAGER_NAME + 
+                ") VALUES (?, ?, ?, ?)";
         
         //Create A PreparedStatement Object To Execute The Query And Insert The Values Into The Query:
         stmt = mConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        stmt.setString(1, rn);
-        stmt.setString(2, bmk);
-        stmt.setString(3, bml);
-        stmt.setInt(4, bs);
-        stmt.setString(5, bes);
-        stmt.setDate(6, new java.sql.Date(purchaseDate.getTime()));
-        stmt.setDate(7, new java.sql.Date(serviceDate.getTime()));
-        if (gid == -1) {
-            stmt.setNull(8, java.sql.Types.INTEGER);
-        }
-        else {
-            stmt.setInt(8, gid);
-        }
+        stmt.setString(1, gn);
+        stmt.setString(2, ga);
+        stmt.setInt(3, gpn);
+        stmt.setString(4, mn);
         
         //Rxecute The Query And Make Sure That One And Only One Row Was Inserted Into The Database:
         numRowsAffected = stmt.executeUpdate();
@@ -108,7 +74,7 @@ public class BusTableGateway {
     }
     
     //Delete Code:
-    public boolean deleteBus(int id) throws SQLException {
+    public boolean deleteGarage(int id) throws SQLException {
         // The SQL Query To Execute:
         String query;
         //The Java.sql.PreparedStatement Object Used To Execute The SQL Query:
@@ -116,7 +82,7 @@ public class BusTableGateway {
         int numRowsAffected;
         
         //The Required SQL DELETE Statement With Place Holder For The BusID Of The Row To Be Remove From The Database:
-        query = "DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_BUS_ID + " = ?";
+        query = "DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_GARAGE_ID + " = ?";
         
         //Create A PreparedStatement Object To Execute The Wuery And Insert The BusID Into The Query:
         stmt = mConnection.prepareStatement(query);
@@ -130,7 +96,7 @@ public class BusTableGateway {
     }
     
     //Code For Retieving All Buses For Table In The Database:
-    public List<Bus> getBuses() throws SQLException {
+    public List<Garage> getGarage() throws SQLException {
         //The SQL To Execute:
         String query;
         //The Java.sql.Statement Object Used To Execute The SQL Query:
@@ -138,79 +104,58 @@ public class BusTableGateway {
         //Thhe Java.sql.Result Representing The Result Of SQL Query:
         ResultSet rs;
         //The Java.sql.List Containing The Bus Objects The Result Of The Query BusID Of The Bus:
-        List<Bus> buses;
+        List<Garage> garages;
         
-        String registrationNo, busMake, busModel, busEngineSize, purchaseDate, dueServiceDate;
-        int busID, busSeats, garageID;
+        String garageName, garageAddress, managerName;
+        int garagePhoneNo, garageID;
         
         //A Bus Object Created From A Row In The Result Of The Query:
-        Bus b;
+        Garage g;
         
         //Execute An SQL SELECT Statement To Get A Java.util.ResultSet Representing The Results Of The SELECT Statement:
         query = "SELECT * FROM " + TABLE_NAME;
         stmt = this.mConnection.createStatement();
         rs = stmt.executeQuery(query);
         
-        buses = new ArrayList<Bus>();
+        garages = new ArrayList<Garage>();
         while (rs.next()) {
-            busID = rs.getInt(COLUMN_BUS_ID);
-            registrationNo = rs.getString(COLUMN_REGISTRATION_NO);
-            busMake = rs.getString(COLUMN_BUS_MAKE);
-            busModel = rs.getString(COLUMN_BUS_MODEL);
-            busSeats = rs.getInt(COLUMN_BUS_SEATS);
-            busEngineSize = rs.getString(COLUMN_BUS_ENGINE_SIZE);
-            purchaseDate = rs.getString(COLUMN_PURCHASE_DATE);
-            dueServiceDate = rs.getString(COLUMN_DUE_SERVICE_DATE);
             garageID = rs.getInt(COLUMN_GARAGE_ID);
-              if (rs.wasNull()) {
-                garageID = -1;
-            }
-
-            b = new Bus(busID, registrationNo, busMake, busModel, busSeats, busEngineSize, purchaseDate, dueServiceDate, garageID);
-            buses.add(b);
+            garageName = rs.getString(COLUMN_GARAGE_NAME);
+            garageAddress = rs.getString(COLUMN_GARAGE_ADDRESS);
+            garagePhoneNo = rs.getInt(COLUMN_GARAGE_PHONE_NO);
+            managerName = rs.getString(COLUMN_MANAGER_NAME);
+  
+            g = new Garage(garageID, garageName, garageAddress, garagePhoneNo, managerName);
+            garages.add(g);
         }
         
-        return buses;              
+        return garages;              
     }
 
     //Code For Updating A Bus:
-    boolean updateBus(Bus b) throws SQLException {
+    boolean updateGarage(Garage g) throws SQLException {
         //The SQL Query To Execute:
        String query;
        //The Java.sql.PreparedStatment Object Used To Execute The SQL Query:
        PreparedStatement stmt;
        int numRowsAffected;
-       int gid;
        
        //The Required SQL INSERT Statement With Place Holders For The Values To Be Inserted Into The Database:
        query = "UPDATE " + TABLE_NAME + " SET " +
-            COLUMN_REGISTRATION_NO  + " = ?, " +
-            COLUMN_BUS_MAKE         + " = ?, " +
-            COLUMN_BUS_MODEL        + " = ?, " +
-            COLUMN_BUS_SEATS        + " = ?, " +
-            COLUMN_BUS_ENGINE_SIZE  + " = ?, " +
-            COLUMN_PURCHASE_DATE    + " = ?, " +
-            COLUMN_DUE_SERVICE_DATE + " = ?, " +
-            COLUMN_GARAGE_ID + " = ? " +
-            " WHERE " + COLUMN_BUS_ID + " = ?";
+            COLUMN_GARAGE_NAME      + " = ?, " +
+            COLUMN_GARAGE_ADDRESS   + " = ?, " +
+            COLUMN_GARAGE_ADDRESS   + " = ?, " +
+            COLUMN_GARAGE_PHONE_NO  + " = ?, " +
+            COLUMN_MANAGER_NAME     + " = ? " +
+            " WHERE " + COLUMN_GARAGE_ID + " = ?";
        
        //Create A PreparedStatement Object To Execute Te Query And Insert The New Values Into The Query:
         stmt = mConnection.prepareStatement(query);
-        stmt.setString(1, b.getRegistrationNo());
-        stmt.setString(2, b.getBusMake());
-        stmt.setString(3, b.getBusModel());
-        stmt.setInt(4, b.getBusSeats());
-        stmt.setString(5, b.getBusEngineSize());
-        stmt.setString(6, b.getPurchaseDate());
-        stmt.setString(7, b.getDueServiceDate());
-        gid = b.getGarageID();
-        if (gid == -1) {
-            stmt.setNull(8, java.sql.Types.INTEGER);
-        }
-        else {
-            stmt.setInt(8, gid);
-        }
-        stmt.setInt(9, b.getBusID());
+        stmt.setString(1, g.getGarageName());
+        stmt.setString(2, g.getGarageAddress());
+        stmt.setInt(3, g.getGaragePhoneNo());
+        stmt.setString(4, g.getManagerName());
+        stmt.setInt(5, g.getGarageID());
         
         //Execute The Query:
         numRowsAffected = stmt.executeUpdate();

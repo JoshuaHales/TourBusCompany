@@ -25,17 +25,21 @@ public class Model {
     
     //Creates A List For All buses:
     List<Bus> buses;
+    List<Garage> garages;
     //Instance Of Bus Table Gateway:
-    BusTableGateway gateway;
+    BusTableGateway busGateway;
+    GarageTableGateway garageGateway;
     
     //Connection To Database Reference To Instance For BusTableGateway,Surronding The Block With A Try And Catch:
     private Model(){
         //Passing A Parameter To the BusTableGateway:
         try {
             Connection conn = DataBaseConnection.getInstance();
-            this.gateway = new BusTableGateway(conn);
+            this.busGateway = new BusTableGateway(conn);
+            this.garageGateway = new GarageTableGateway(conn);
             
-            this.buses = this.gateway.getBuses();
+            this.buses = this.busGateway.getBuses();
+            this.garages = this.garageGateway.getGarage();
         } 
         catch (ClassNotFoundException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,7 +53,7 @@ public class Model {
     public boolean addBus(Bus b) {
         boolean result = false;
         try {
-            int busID = this.gateway.insertBus(b.getRegistrationNo(), b.getBusMake(), b.getBusModel(), b.getBusSeats(), b.getBusEngineSize(), b.getPurchaseDate(), b.getDueServiceDate());
+            int busID = this.busGateway.insertBus(b.getRegistrationNo(), b.getBusMake(), b.getBusModel(), b.getBusSeats(), b.getBusEngineSize(), b.getPurchaseDate(), b.getDueServiceDate(), b.getGarageID());
             if (busID != -1) {
                 b.setBusID(busID);
                 this.buses.add(b);
@@ -66,7 +70,7 @@ public class Model {
         boolean removed = false;
         
         try {
-            removed = this.gateway.deleteBus(b.getBusID());
+            removed = this.busGateway.deleteBus(b.getBusID());
             if (removed) {
                 removed = this.buses.remove(b);
             }
@@ -81,7 +85,7 @@ public class Model {
     //Get Bus List Code:
     public List<Bus> getBuses() {
         try {
-            this.buses = this.gateway.getBuses();
+            this.buses = this.busGateway.getBuses();
         } 
         catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,7 +118,84 @@ public class Model {
         boolean updated = false;
         
         try {
-            updated = this.gateway.updateBus(b);
+            updated = this.busGateway.updateBus(b);
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return updated;
+    }
+    
+    //Code Add Garage:
+    public boolean addGarage(Garage g) {
+        boolean result = false;
+        try {
+            int garageID = this.garageGateway.insertGarage(g.getGarageName(), g.getGarageAddress(), g.getGaragePhoneNo(), g.getManagerName());
+            if (garageID != -1) {
+                g.setGarageID(garageID);
+                this.garages.add(g);
+                result = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    //Code Delete Garage:
+    public boolean removeGarage(Garage g) {
+        boolean removed = false;
+        
+        try {
+            removed = this.garageGateway.deleteGarage(g.getGarageID());
+            if (removed) {
+                removed = this.garages.remove(g);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return removed;
+    }
+
+    public List<Garage> getGarages() {
+        try {
+            this.garages = this.garageGateway.getGarage();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return this.garages;
+    }
+ 
+
+    Garage findGarageByGarageID(int garageID) {
+        Garage g = null;
+        int i = 0;
+        boolean found = false;
+        while (i < this.garages.size() && !found) {
+            g = this.garages.get(i);
+            if (g.getGarageID() == garageID) {
+                found = true;
+            }
+            else {
+                i++;
+            }
+        }
+        if (!found) {
+            g = null;
+        }
+        return g;
+    }
+
+    //Update Bus List Code:
+    boolean updateGarage(Garage g) {
+        boolean updated = false;
+        
+        try {
+            updated = this.garageGateway.updateGarage(g);
         }
         catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);

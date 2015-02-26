@@ -92,7 +92,7 @@ public class MainApp {
                               "-Purchase Date-", 
                               "-Service Due Date-");
             for (Bus pr : buses) {
-                System.out.printf("%7d %30s %20s %20s %20d %25s %25s %25s\n",
+                System.out.printf("%7d %30s %20s %20s %20d %25s %25s %25s %7d\n",
                 pr.getBusID(),
                 pr.getRegistrationNo(),
                 pr.getBusMake(),
@@ -100,7 +100,8 @@ public class MainApp {
                 pr.getBusSeats(),
                 pr.getBusEngineSize(),
                 pr.getPurchaseDate(),
-                pr.getDueServiceDate());
+                pr.getDueServiceDate(),
+                pr.getGarageID());
             }
         }
         System.out.println();
@@ -109,7 +110,7 @@ public class MainApp {
     //Code For Creating A New Bus (Reads Input From Keyboard And Stores Into ReadBus Object:
     private static Bus readBus(Scanner keyb) {
         String registrationNo, busMake, busModel, busEngineSize, purchaseDate, dueServiceDate;
-        int busSeats;
+        int busSeats, garageID;
         String line;
         
         registrationNo = getString(keyb, "-Enter Registration Number: ");
@@ -120,9 +121,11 @@ public class MainApp {
         busEngineSize = getString(keyb, "-Enter Bus Engine Size: ");
         purchaseDate = getString(keyb, "-Enter Bus Purchase Date (yyyy-mm-dd): ");
         dueServiceDate = getString(keyb, "-Enter Bus Service Due Date (yyyy-mm-dd): ");
+        line = getString(keyb, "Enter Garage ID (Enter -1 For No Garage): ");
+        garageID = Integer.parseInt(line);
         
         Bus b =
-            new Bus(registrationNo, busMake, busModel, busSeats, busEngineSize, purchaseDate, dueServiceDate);
+            new Bus(registrationNo, busMake, busModel, busSeats, busEngineSize, purchaseDate, dueServiceDate, garageID);
         
         return b;
     }
@@ -166,7 +169,7 @@ public class MainApp {
                 System.out.println("-Bus Updated.\n");       
             }
             else {
-                System.out.println("-Programmer Not Updated.\n");
+                System.out.println("-Bus Not Updated.\n");
             }
         }
         else {
@@ -177,8 +180,8 @@ public class MainApp {
     //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editBusDetails(Scanner keyb, Bus b) {
         String registrationNo, busMake, busModel, busEngineSize, purchaseDate, dueServiceDate;
-        int busSeats;
-        String line1;
+        int busSeats, garageID;
+        String line1, line2;
         
         registrationNo = getString(keyb, "-Enter Registration Number [" + b.getRegistrationNo() + "]: ");
         busMake = getString(keyb, "-Enter Bus Make [" + b.getBusMake() + "]: ");
@@ -187,6 +190,7 @@ public class MainApp {
         busEngineSize = getString(keyb, "-Enter Bus Engine Size [" + b.getBusEngineSize() + "]: ");
         purchaseDate = getString(keyb, "-Enter Bus Purchase Date [" + b.getPurchaseDate() + "]: ");
         dueServiceDate = getString(keyb, "-Enter Bus Service Due Date [" + b.getDueServiceDate() + "]: ");
+        line2 = getString(keyb, "Enter Garage ID (Enter -1 For No Garage)[" + b.getGarageID() + "]: ");
         
         if (registrationNo.length() != 0) {
             b.setRegistrationNo(registrationNo);
@@ -209,6 +213,10 @@ public class MainApp {
         }
         if (dueServiceDate.length() != 0) {
             b.setDueServiceDate(dueServiceDate);
+        }
+        if (line2.length() != 0) {
+            garageID = Integer.parseInt(line2);
+            b.setGarageID(garageID);
         }
     }
 }
