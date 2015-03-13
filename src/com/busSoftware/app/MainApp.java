@@ -20,9 +20,14 @@ public class MainApp {
             System.out.println("---------------------");
             System.out.println("-1 Create A New Bus.");
             System.out.println("-2 Delete Existing Bus.");
-            System.out.println("-3 Edit Existing Buses..");
+            System.out.println("-3 Edit Existing Buses.");
             System.out.println("-4 View All Buses.");
-            System.out.println("-5 Exit Tour Bus Company.");
+            System.out.println();
+            System.out.println("-5 Create A New Garage.");
+            System.out.println("-6 Delete Existing Garage.");
+            System.out.println("-7 Edit Existing Garages.");
+            System.out.println("-8 View All Garages.");
+            System.out.println("-9 Exit Tour Bus Company.");
             System.out.println();
         
             System.out.print("-Enter Option:");
@@ -50,15 +55,40 @@ public class MainApp {
                     editBus(keyboard, model);
                     break;
                 }
+                 //To View All Buses: 
                 case 4: {
                     System.out.println("-Viewing All Buses.");
                     viewBuses(model);
                     break;
                 }
+                //To Create A New Garage:
+                case 5: {
+                    System.out.println("-Creating A New Garage.");
+                    createGarage(keyboard,model);
+                    break;
+                }
+                //To Delete A Existing Garage:
+                case 6: {
+                    System.out.println("-Deleting A Garage.");
+                    deleteGarage(keyboard,model);
+                    break;
+                }
+                //To Update A Existing Garage: 
+                case 7: {
+                    System.out.println("-Updating All Garages.");
+                    editGarage(keyboard, model);
+                    break;
+                }
+                //To View All Garages:
+                case 8: {
+                    System.out.println("-Viewing All Garages.");
+                    viewGarages(model);
+                    break;
+                }
             }
         }
         //Once Not Equals To 5 Programes Runs Else Stops:
-        while (opt != 5);
+        while (opt != 9);
         System.out.println("-Exiting App.");
     }
     
@@ -73,6 +103,47 @@ public class MainApp {
         }
         System.out.println();
     }
+    
+    //Delete Methode:
+    private static void deleteBus(Scanner keyboard, Model model) {
+        System.out.println("-Enter The ID Of The Bus You Want To Delete:");
+            int busID = Integer.parseInt(keyboard.nextLine());
+            Bus b;
+                    
+            b = model.findBusByBusID(busID);
+            if (b != null) {
+                if (model.removeBus(b)) {
+                    System.out.println("-Bus Deleted.\n");
+                }
+                else {
+                    System.out.println("-Bus Not Deleted.\n");
+                }
+            }
+            else {
+                System.out.println("-Bus Not Found.\n");
+            }          
+    }
+    
+    //Edit Code If/Else If Table Is Updated Or Not:
+    private static void editBus(Scanner kb, Model m) {
+        System.out.print("-Enter The Bus ID You Want To Edit: ");
+        int busID = Integer.parseInt(kb.nextLine());
+        Bus b;
+        
+        b = m.findBusByBusID(busID);
+        if (b != null) {
+            editBusDetails(kb, b);
+            if (m. updateBus(b)) {
+                System.out.println("-Bus Updated.\n");       
+            }
+            else {
+                System.out.println("-Bus Not Updated.\n");
+            }
+        }
+        else {
+            System.out.println("-Bus Not Found.\n");
+        }
+    }
 
     //Code For Viewing All Buses:
     private static void viewBuses(Model model) {
@@ -82,7 +153,7 @@ public class MainApp {
             System.out.println("-There Are No Buses In The Database.");
         }
         else {
-            System.out.printf("%5s %30s %20s %20s %20s %25s %25s %25s\n", 
+            System.out.printf("%5s %30s %20s %20s %20s %25s %25s %25s %25s\n", 
                               "-Bus ID-", 
                               "-Registration Number-", 
                               "-Bus Make-", 
@@ -90,9 +161,10 @@ public class MainApp {
                               "-Bus Seats-", 
                               "-Bus Engine Size-", 
                               "-Purchase Date-", 
-                              "-Service Due Date-");
+                              "-Service Due Date-",
+                              "-Garage Name-");
             for (Bus pr : buses) {
-                System.out.printf("%7d %30s %20s %20s %20d %25s %25s %25s %7d\n",
+                System.out.printf("%7d %30s %20s %20s %20d %25s %25s %25s %25s\n",
                 pr.getBusID(),
                 pr.getRegistrationNo(),
                 pr.getBusMake(),
@@ -130,53 +202,6 @@ public class MainApp {
         return b;
     }
     
-    //GetString Methode:
-    private static String getString(Scanner keyboard, String prompt) {
-        System.out.print(prompt);
-        return keyboard.nextLine();
-    }
-
-    //Delete Methode:
-    private static void deleteBus(Scanner keyboard, Model model) {
-        System.out.println("-Enter The ID Of The Bus You Want To Delete:");
-            int busID = Integer.parseInt(keyboard.nextLine());
-            Bus b;
-                    
-            b = model.findBusByBusID(busID);
-            if (b != null) {
-                if (model.removeBus(b)) {
-                    System.out.println("-Bus Deleted.\n");
-                }
-                else {
-                    System.out.println("-Bus Not Deleted.\n");
-                }
-            }
-            else {
-                System.out.println("-Bus Not Found.\n");
-            }          
-    }
-
-    //Edit Code If/Else If Table Is Updated Or Not:
-    private static void editBus(Scanner kb, Model m) {
-        System.out.print("-Enter The Bus ID You Want To Edit.");
-        int busID = Integer.parseInt(kb.nextLine());
-        Bus b;
-        
-        b = m.findBusByBusID(busID);
-        if (b != null) {
-            editBusDetails(kb, b);
-            if (m. updateBus(b)) {
-                System.out.println("-Bus Updated.\n");       
-            }
-            else {
-                System.out.println("-Bus Not Updated.\n");
-            }
-        }
-        else {
-            System.out.println("-Bus Not Found.\n");
-        }
-    }
-
     //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editBusDetails(Scanner keyb, Bus b) {
         String registrationNo, busMake, busModel, busEngineSize, purchaseDate, dueServiceDate;
@@ -218,6 +243,135 @@ public class MainApp {
             garageID = Integer.parseInt(line2);
             b.setGarageID(garageID);
         }
+    }
+    
+    //Code For Telling If Garage Was Created Or Not USing A Boolean In The Model Class:
+    private static void createGarage(Scanner keyboard, Model model) {
+        Garage g = readGarage(keyboard);
+        if (model.addGarage(g)) {
+            System.out.println("-New Garage Added To Database.");
+        }
+        else {
+            System.out.println("-New Garage Was'nt Added To Database.");
+        }
+        System.out.println();
+    }
+    
+    //Delete Methode:
+    private static void deleteGarage(Scanner keyboard, Model model) {
+        System.out.println("-Enter The ID Of The Garage You Want To Delete:");
+            int garageID = Integer.parseInt(keyboard.nextLine());
+            Garage g;
+                    
+            g = model.findGarageByGarageID(garageID);
+            if (g != null) {
+                if (model.removeGarage(g)) {
+                    System.out.println("-Garage Deleted.\n");
+                }
+                else {
+                    System.out.println("-Garage Not Deleted.\n");
+                }
+            }
+            else {
+                System.out.println("-Garage Not Found.\n");
+            }          
+    }
+    
+    //Edit Code If/Else If Table Is Updated Or Not:
+    private static void editGarage(Scanner kb, Model m) {
+        System.out.print("-Enter The Garage ID You Want To Edit: ");
+        int garageID = Integer.parseInt(kb.nextLine());
+        Garage g;
+        
+        g = m.findGarageByGarageID(garageID);
+        if (g != null) {
+            editGarageDetails(kb, g);
+            if (m. updateGarage(g)) {
+                System.out.println("-Garage Updated.\n");       
+            }
+            else {
+                System.out.println("-Garage Not Updated.\n");
+            }
+        }
+        else {
+            System.out.println("-Garage Not Found.\n");
+        }
+    }
+
+    //Code For Viewing All Garagees:
+    private static void viewGarages(Model model) {
+        List<Garage> garages = model.getGarages();
+        System.out.println();
+        if (garages.isEmpty()) {
+            System.out.println("-There Are No Garages In The Database.");
+        }
+        else {
+            System.out.printf("%5s %20s %40s %30s %20s\n", 
+                              "-Garage ID-", 
+                              "-Garage Name-", 
+                              "-Garage Address-", 
+                              "-Garage Phone Number-", 
+                              "-Manger Name-");
+            for (Garage pr : garages) {
+                System.out.printf("%10d %20s %40s %30d %20s\n",
+                pr.getGarageID(),
+                pr.getGarageName(),
+                pr.getGarageAddress(),
+                pr.getGaragePhoneNo(),
+                pr.getManagerName());
+            }
+        }
+        System.out.println();
+    }
+    
+    //Code For Creating A New Garage (Reads Input From Keyboard And Stores Into ReadGarage Object:
+    private static Garage readGarage(Scanner keyb) {
+        String garageName, garageAddress, managerName;
+        int garagePhoneNo;
+        String line;
+        
+        garageName = getString(keyb, "-Enter Garage Name: ");
+        garageAddress = getString(keyb, "-Enter Garage Address: ");
+        line = getString(keyb, "-Enter Amount Of Garage Phone Number: ");
+        garagePhoneNo = Integer.parseInt(line);
+        managerName = getString(keyb, "-Enter Manager Name: ");
+        
+        Garage g =
+            new Garage(garageName, garageAddress, garagePhoneNo, managerName);
+        
+        return g;
+    }
+    
+    //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
+    private static void editGarageDetails(Scanner keyb, Garage g) {
+        String garageName, garageAddress, managerName;
+        int garagePhoneNo;
+        String line1;
+        
+        garageName = getString(keyb, "-Enter Garage Name [" + g.getGarageName() + "]: ");
+        garageAddress = getString(keyb, "-Enter Garage Address [" + g.getGarageAddress() + "]: ");
+        line1 = getString(keyb, "-Enter Garage Phone Number [" + g.getGaragePhoneNo() + "]: ");
+        managerName = getString(keyb, "-Enter Manager Name [" + g.getManagerName() + "]: ");
+        
+        if (garageName.length() != 0) {
+            g.setGarageName(garageName);
+        }
+        if (garageAddress.length() != 0) {
+            g.setGarageAddress(garageAddress);
+        }
+        if (line1.length() != 0) {
+            garagePhoneNo = Integer.parseInt(line1);
+            g.setGaragePhoneNo(garagePhoneNo);
+        }
+        if (managerName.length() != 0) {
+            g.setManagerName(managerName);
+        }  
+    }
+    
+    //GetString Methode:
+    private static String getString(Scanner keyboard, String prompt) {
+        System.out.print(prompt);
+        return keyboard.nextLine();
     }
 }
     

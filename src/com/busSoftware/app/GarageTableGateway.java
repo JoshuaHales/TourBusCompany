@@ -144,7 +144,6 @@ public class GarageTableGateway {
        query = "UPDATE " + TABLE_NAME + " SET " +
             COLUMN_GARAGE_NAME      + " = ?, " +
             COLUMN_GARAGE_ADDRESS   + " = ?, " +
-            COLUMN_GARAGE_ADDRESS   + " = ?, " +
             COLUMN_GARAGE_PHONE_NO  + " = ?, " +
             COLUMN_MANAGER_NAME     + " = ? " +
             " WHERE " + COLUMN_GARAGE_ID + " = ?";
