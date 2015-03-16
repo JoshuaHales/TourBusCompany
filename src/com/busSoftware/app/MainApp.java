@@ -27,7 +27,12 @@ public class MainApp {
             System.out.println("-6 Delete Existing Garage.");
             System.out.println("-7 Edit Existing Garages.");
             System.out.println("-8 View All Garages.");
-            System.out.println("-9 Exit Tour Bus Company.");
+            System.out.println();
+            System.out.println("-9 Create A New Garage.");
+            System.out.println("-10 Delete Existing Garage.");
+            System.out.println("-11 Edit Existing Garages.");
+            System.out.println("-12 View All Garages.");
+            System.out.println("-13 Exit Tour Bus Company.");
             System.out.println();
         
             System.out.print("-Enter Option:");
@@ -85,10 +90,35 @@ public class MainApp {
                     viewGarages(model);
                     break;
                 }
+                
+                //To Create A New Service:
+                case 9: {
+                    System.out.println("-Creating A New Service.");
+                    createService(keyboard,model);
+                    break;
+                }
+                //To Delete A Existing Service:
+                case 10: {
+                    System.out.println("-Deleting A Service.");
+                    deleteService(keyboard,model);
+                    break;
+                }
+                //To Update A Existing Service: 
+                case 11: {
+                    System.out.println("-Updating All Services.");
+                    editService(keyboard, model);
+                    break;
+                }
+                //To View All Services:
+                case 12: {
+                    System.out.println("-Viewing All Services.");
+                    viewServices(model);
+                    break;
+                }
             }
         }
         //Once Not Equals To 5 Programes Runs Else Stops:
-        while (opt != 9);
+        while (opt != 13);
         System.out.println("-Exiting App.");
     }
     
@@ -153,7 +183,7 @@ public class MainApp {
             System.out.println("-There Are No Buses In The Database.");
         }
         else {
-            System.out.printf("%5s %30s %20s %20s %20s %25s %25s %25s %25s\n", 
+            System.out.printf("%5s %30s %20s %20s %20s %25s %25s %25s %25s %25s\n", 
                               "-Bus ID-", 
                               "-Registration Number-", 
                               "-Bus Make-", 
@@ -162,9 +192,10 @@ public class MainApp {
                               "-Bus Engine Size-", 
                               "-Purchase Date-", 
                               "-Service Due Date-",
-                              "-Garage Name-");
+                              "-Garage Name-",
+                              "-Service ID-");
             for (Bus pr : buses) {
-                System.out.printf("%7d %30s %20s %20s %20d %25s %25s %25s %25s\n",
+                System.out.printf("%7d %30s %20s %20s %20d %25s %25s %25s %25s %25s\n",
                 pr.getBusID(),
                 pr.getRegistrationNo(),
                 pr.getBusMake(),
@@ -173,7 +204,8 @@ public class MainApp {
                 pr.getBusEngineSize(),
                 pr.getPurchaseDate(),
                 pr.getDueServiceDate(),
-                pr.getGarageID());
+                pr.getGarageID(),
+                pr.getServiceID());
             }
         }
         System.out.println();
@@ -182,7 +214,7 @@ public class MainApp {
     //Code For Creating A New Bus (Reads Input From Keyboard And Stores Into ReadBus Object:
     private static Bus readBus(Scanner keyb) {
         String registrationNo, busMake, busModel, busEngineSize, purchaseDate, dueServiceDate;
-        int busSeats, garageID;
+        int busSeats, garageID, serviceID;
         String line;
         
         registrationNo = getString(keyb, "-Enter Registration Number: ");
@@ -195,9 +227,11 @@ public class MainApp {
         dueServiceDate = getString(keyb, "-Enter Bus Service Due Date (yyyy-mm-dd): ");
         line = getString(keyb, "Enter Garage ID (Enter -1 For No Garage): ");
         garageID = Integer.parseInt(line);
+        line = getString(keyb, "Enter Service ID (Enter -1 For No Service): ");
+        serviceID = Integer.parseInt(line);
         
         Bus b =
-            new Bus(registrationNo, busMake, busModel, busSeats, busEngineSize, purchaseDate, dueServiceDate, garageID);
+            new Bus(registrationNo, busMake, busModel, busSeats, busEngineSize, purchaseDate, dueServiceDate, garageID, serviceID);
         
         return b;
     }
@@ -205,8 +239,8 @@ public class MainApp {
     //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editBusDetails(Scanner keyb, Bus b) {
         String registrationNo, busMake, busModel, busEngineSize, purchaseDate, dueServiceDate;
-        int busSeats, garageID;
-        String line1, line2;
+        int busSeats, garageID, serviceID;
+        String line1, line2, line3;
         
         registrationNo = getString(keyb, "-Enter Registration Number [" + b.getRegistrationNo() + "]: ");
         busMake = getString(keyb, "-Enter Bus Make [" + b.getBusMake() + "]: ");
@@ -216,6 +250,7 @@ public class MainApp {
         purchaseDate = getString(keyb, "-Enter Bus Purchase Date [" + b.getPurchaseDate() + "]: ");
         dueServiceDate = getString(keyb, "-Enter Bus Service Due Date [" + b.getDueServiceDate() + "]: ");
         line2 = getString(keyb, "Enter Garage ID (Enter -1 For No Garage)[" + b.getGarageID() + "]: ");
+        line3 = getString(keyb, "Enter Service ID (Enter -1 For No Service)[" + b.getServiceID() + "]: ");
         
         if (registrationNo.length() != 0) {
             b.setRegistrationNo(registrationNo);
@@ -242,6 +277,10 @@ public class MainApp {
         if (line2.length() != 0) {
             garageID = Integer.parseInt(line2);
             b.setGarageID(garageID);
+        }
+        if (line3.length() != 0) {
+            serviceID = Integer.parseInt(line3);
+            b.setServiceID(serviceID);
         }
     }
     
@@ -373,5 +412,117 @@ public class MainApp {
         System.out.print(prompt);
         return keyboard.nextLine();
     }
+    
+    //Code For Telling If Service Was Created Or Not USing A Boolean In The Model Class:
+    private static void createService(Scanner keyboard, Model model) {
+        Service s = readService(keyboard);
+        if (model.addService(s)) {
+            System.out.println("-New Service Added To Database.");
+        }
+        else {
+            System.out.println("-New Service Was'nt Added To Database.");
+        }
+        System.out.println();
+    }
+    
+    //Delete Methode:
+    private static void deleteService(Scanner keyboard, Model model) {
+        System.out.println("-Enter The ID Of The Service You Want To Delete:");
+            int serviceID = Integer.parseInt(keyboard.nextLine());
+            Service s;
+                    
+            s = model.findServiceByServiceID(serviceID);
+            if (s != null) {
+                if (model.removeService(s)) {
+                    System.out.println("-Service Deleted.\n");
+                }
+                else {
+                    System.out.println("-Service Not Deleted.\n");
+                }
+            }
+            else {
+                System.out.println("-Service Not Found.\n");
+            }          
+    }
+    
+    //Edit Code If/Else If Table Is Updated Or Not:
+    private static void editService(Scanner kb, Model m) {
+        System.out.print("-Enter The Service ID You Want To Edit: ");
+        int serviceID = Integer.parseInt(kb.nextLine());
+        Service s;
+        
+        s = m.findServiceByServiceID(serviceID);
+        if (s != null) {
+            editServiceDetails(kb, s);
+            if (m. updateService(s)) {
+                System.out.println("-Service Updated.\n");       
+            }
+            else {
+                System.out.println("-Service Not Updated.\n");
+            }
+        }
+        else {
+            System.out.println("-Service Not Found.\n");
+        }
+    }
+
+    //Code For Viewing All Services:
+    private static void viewServices(Model model) {
+        List<Service> services = model.getServices();
+        System.out.println();
+        if (services.isEmpty()) {
+            System.out.println("-There Are No Services In The Database.");
+        }
+        else {
+            System.out.printf("%5s %30s %20s %20s\n", 
+                              "-Service ID-", 
+                              "-Service Date-", 
+                              "-Jobs Done-", 
+                              "-Mechanic's Name-");
+            for (Service pr : services) {
+                System.out.printf("%7d %30s %20s %20s\n",
+                pr.getServiceID(),
+                pr.getServiceDate(),
+                pr.getJobsDone(),
+                pr.getMechanicName());
+            }
+        }
+        System.out.println();
+    }
+    
+    //Code For Creating A New Bus (Reads Input From Keyboard And Stores Into ReadBus Object:
+    private static Service readService(Scanner keyb) {
+        String serviceDate, jobsDone, mechanicName;
+        
+        serviceDate = getString(keyb, "-Enter Service Date(yyyy-mm-dd): ");
+        jobsDone = getString(keyb, "-Enter Jobs Done: ");
+        mechanicName = getString(keyb, "-Enter Mechanic's Name: ");
+        
+        Service s =
+            new Service(serviceDate, jobsDone, mechanicName);
+        
+        return s;
+    }
+    
+    //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
+    private static void editServiceDetails(Scanner keyb, Service s) {
+        String serviceDate, jobsDone, mechanicName;
+        
+        serviceDate = getString(keyb, "-Enter Service Date [" + s.getServiceDate() + "]: ");
+        jobsDone = getString(keyb, "-Enter Jobs Done [" + s.getJobsDone() + "]: ");
+        mechanicName = getString(keyb, "-Enter Mechanic's Name [" + s.getMechanicName() + "]: ");
+        
+        if (serviceDate.length() != 0) {
+            s.setServiceDate(serviceDate);
+        }
+        if (jobsDone.length() != 0) {
+            s.setJobsDone(jobsDone);
+        }
+        if (mechanicName.length() != 0) {
+            s.setMechanicName(mechanicName);
+        }
+    }
+    
 }
+
     

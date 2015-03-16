@@ -16,10 +16,15 @@ public class DataBaseConnection {
         String host, db, user, password;
         
         //Own Database:
-        host = "daneel";
-        db = "N00133834";
-        user = "N00133834";
-        password = "N00133834";
+        //host = "daneel";
+        //db = "N00133834";
+        //user = "N00133834";
+        //password = "N00133834";
+        host = "localhost"; 
+        db = "n00133834"; 
+        user = "root"; 
+        password = ""; 
+        
         
         //If Connection Is Null Or Not Found Then Creates A Class Not Found Exception, Else Creates A Connection To The Database:
         if (sConnection == null || sConnection.isClosed()) {

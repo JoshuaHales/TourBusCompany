@@ -12,9 +12,10 @@ public class Bus {
     private String purchaseDate;
     private String dueServiceDate;
     private int garageID;
+    private int serviceID;
     
     //.This Is Calling The Bus Constructor (When ID Is Present):
-    public Bus(int bid, String rn, String bmk, String bml, int bs, String bes, String pd, String dsd, int gid) {
+    public Bus(int bid, String rn, String bmk, String bml, int bs, String bes, String pd, String dsd, int gid, int sid) {
         this.busID = bid;
         this.registrationNo = rn;
         this.busMake = bmk;
@@ -23,12 +24,13 @@ public class Bus {
         this.busEngineSize = bes;
         this.purchaseDate = pd;
         this.dueServiceDate = dsd;
-        this.garageID = gid;    
+        this.garageID = gid;
+        this.serviceID = sid;
     }
     
     //(When ID Is Not Present):
-    public Bus(String rn, String bmk, String bml, int bs, String bes, String pd, String dsd, int gid){
-        this(-1, rn, bmk, bml, bs, bes, pd, dsd, gid);
+    public Bus(String rn, String bmk, String bml, int bs, String bes, String pd, String dsd, int gid, int sid){
+        this(-1, rn, bmk, bml, bs, bes, pd, dsd, gid, sid);
     }
     
    //For busID:
@@ -101,6 +103,14 @@ public class Bus {
     }
     public void setGarageID(int garageID){
         this.garageID = garageID;
+    }
+    
+    //For serviceID:
+    public int getServiceID(){
+        return serviceID;
+    }
+    public void setServiceID(int serviceID){
+        this.serviceID = serviceID;
     }
 
    

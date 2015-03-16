@@ -26,9 +26,11 @@ public class Model {
     //Creates A List For All buses:
     List<Bus> buses;
     List<Garage> garages;
+    List<Service> services;
     //Instance Of Bus Table Gateway:
     BusTableGateway busGateway;
     GarageTableGateway garageGateway;
+    ServiceTableGateway serviceGateway;
     
     //Connection To Database Reference To Instance For BusTableGateway,Surronding The Block With A Try And Catch:
     private Model(){
@@ -37,9 +39,11 @@ public class Model {
             Connection conn = DataBaseConnection.getInstance();
             this.busGateway = new BusTableGateway(conn);
             this.garageGateway = new GarageTableGateway(conn);
+            this.serviceGateway = new ServiceTableGateway(conn);
             
             this.buses = this.busGateway.getBuses();
             this.garages = this.garageGateway.getGarage();
+            this.services = this.serviceGateway.getService();
         } 
         catch (ClassNotFoundException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,7 +57,7 @@ public class Model {
     public boolean addBus(Bus b) {
         boolean result = false;
         try {
-            int busID = this.busGateway.insertBus(b.getRegistrationNo(), b.getBusMake(), b.getBusModel(), b.getBusSeats(), b.getBusEngineSize(), b.getPurchaseDate(), b.getDueServiceDate(), b.getGarageID());
+            int busID = this.busGateway.insertBus(b.getRegistrationNo(), b.getBusMake(), b.getBusModel(), b.getBusSeats(), b.getBusEngineSize(), b.getPurchaseDate(), b.getDueServiceDate(), b.getGarageID(), b.getServiceID());
             if (busID != -1) {
                 b.setBusID(busID);
                 this.buses.add(b);
@@ -203,4 +207,84 @@ public class Model {
         
         return updated;
     }
+    
+    //Add Service List Code:
+    public boolean addService(Service s) {
+        boolean result = false;
+        try {
+            int serviceID = this.serviceGateway.insertService(s.getServiceDate(), s.getJobsDone(), s.getMechanicName());
+            if (serviceID != -1) {
+                s.setServiceID(serviceID);
+                this.services.add(s);
+                result = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    //Code Delete Service:
+    public boolean removeService(Service s) {
+        boolean removed = false;
+        
+        try {
+            removed = this.serviceGateway.deleteService(s.getServiceID());
+            if (removed) {
+                removed = this.services.remove(s);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return removed;
+    }
+    
+    //Get Service List Code:
+    public List<Service> getServices() {
+        try {
+            this.services = this.serviceGateway.getService();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return this.services;
+    }
+
+    //Find Service List Code:
+    Service findServiceByServiceID(int serviceID) {
+        Service s = null;
+        int i = 0;
+        boolean found = false;
+        while (i < this.services.size() && !found) {
+            s = this.services.get(i);
+            if (s.getServiceID() == serviceID) {
+                found = true;
+            }
+            else {
+                i++;
+            }
+        }
+        if (!found) {
+            s = null;
+        }
+        return s;
+    }
+
+    //Update Service List Code:
+    boolean updateService(Service s) {
+        boolean updated = false;
+        
+        try {
+            updated = this.serviceGateway.updateService(s);
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return updated;
+    }
+
 }
+
