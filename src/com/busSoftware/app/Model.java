@@ -27,10 +27,12 @@ public class Model {
     List<Bus> buses;
     List<Garage> garages;
     List<Service> services;
+    List<Assignment> assignments;
     //Instance Of Bus Table Gateway:
     BusTableGateway busGateway;
     GarageTableGateway garageGateway;
     ServiceTableGateway serviceGateway;
+    AssignmentTableGateway assignmentGateway;
     
     //Connection To Database Reference To Instance For BusTableGateway,Surronding The Block With A Try And Catch:
     private Model(){
@@ -40,6 +42,7 @@ public class Model {
             this.busGateway = new BusTableGateway(conn);
             this.garageGateway = new GarageTableGateway(conn);
             this.serviceGateway = new ServiceTableGateway(conn);
+            this.assignmentGateway = new AssignmentTableGateway(conn);
             
             this.buses = this.busGateway.getBuses();
             this.garages = this.garageGateway.getGarage();
@@ -57,7 +60,7 @@ public class Model {
     public boolean addBus(Bus b) {
         boolean result = false;
         try {
-            int busID = this.busGateway.insertBus(b.getRegistrationNo(), b.getBusMake(), b.getBusModel(), b.getBusSeats(), b.getBusEngineSize(), b.getPurchaseDate(), b.getDueServiceDate(), b.getGarageID(), b.getServiceID());
+            int busID = this.busGateway.insertBus(b.getRegistrationNo(), b.getBusMake(), b.getBusModel(), b.getBusSeats(), b.getBusEngineSize(), b.getPurchaseDate(), b.getDueServiceDate(), b.getGarageID(), b.getServiceID(),  b.getAssignmentsID());
             if (busID != -1) {
                 b.setBusID(busID);
                 this.buses.add(b);
@@ -278,6 +281,84 @@ public class Model {
         
         try {
             updated = this.serviceGateway.updateService(s);
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return updated;
+    }
+    
+    //Add Bus List Code:
+    public boolean addAssignment(Assignment a) {
+        boolean result = false;
+        try {
+            int assignmentsID = this.assignmentGateway.insertAssignment(a.getBusID(), a.getDriverID(), a.getDescription(), a.getAssignmentsDate());
+            if (assignmentsID != -1) {
+                a.setAssignmentsID(assignmentsID);
+                this.assignments.add(a);
+                result = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    //Code Delete Bus:
+    public boolean removeAssignment(Assignment a) {
+        boolean removed = false;
+        
+        try {
+            removed = this.assignmentGateway.deleteAssignment(a.getAssignmentsID());
+            if (removed) {
+                removed = this.assignments.remove(a);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return removed;
+    }
+    
+    //Get Bus List Code:
+    public List<Assignment> getAssignments() {
+        try {
+            this.assignments = this.assignmentGateway.getAssignments();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return this.assignments;
+    }
+
+    //Find Bus List Code:
+    Assignment findAssignmentByAssignmentsID(int assignmentsID) {
+        Assignment a = null;
+        int i = 0;
+        boolean found = false;
+        while (i < this.assignments.size() && !found) {
+            a = this.assignments.get(i);
+            if (a.getAssignmentsID() == assignmentsID) {
+                found = true;
+            }
+            else {
+                i++;
+            }
+        }
+        if (!found) {
+            a = null;
+        }
+        return a;
+    }
+
+    //Update Bus List Code:
+    boolean updateAssignment(Assignment a) {
+        boolean updated = false;
+        
+        try {
+            updated = this.assignmentGateway.updateAssignment(a);
         }
         catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);

@@ -34,13 +34,14 @@ public class BusTableGateway {
     private static final String COLUMN_DUE_SERVICE_DATE = "dueServiceDate";
     private static final String COLUMN_GARAGE_ID = "garageID";
     private static final String COLUMN_SERVICE_ID = "serviceID";
+    private static final String COLUMN_ASSIGNMENTS_ID = "assignmentsID";
     
     public BusTableGateway( Connection connection) {
         mConnection = connection;
     }
     
     //Insert Code:
-    public int insertBus(String rn, String bmk, String bml, int bs, String bes, String pd, String dsd, int gid, int sid) throws SQLException {
+    public int insertBus(String rn, String bmk, String bml, int bs, String bes, String pd, String dsd, int gid, int sid, int aid) throws SQLException {
         // The SQL Query To Execute
         String query;
         //The Java.sql.PreparedStatement Object Used To Execute The SQL Query:
@@ -59,8 +60,9 @@ public class BusTableGateway {
                 COLUMN_PURCHASE_DATE + ", " +
                 COLUMN_DUE_SERVICE_DATE + ", " +
                 COLUMN_GARAGE_ID + ", " +
-                COLUMN_SERVICE_ID +
-                ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                COLUMN_SERVICE_ID + ", " +
+                COLUMN_ASSIGNMENTS_ID +
+                ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         //Code To Get Date Values To Work:
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -100,6 +102,13 @@ public class BusTableGateway {
         }
         else {
             stmt.setInt(9, sid);
+        }
+        
+        if (aid == -1) {
+            stmt.setNull(10, java.sql.Types.INTEGER);
+        }
+        else {
+            stmt.setInt(10, aid);
         }
         
         //Rxecute The Query And Make Sure That One And Only One Row Was Inserted Into The Database:
@@ -150,7 +159,7 @@ public class BusTableGateway {
         List<Bus> buses;
         
         String registrationNo, busMake, busModel, busEngineSize, purchaseDate, dueServiceDate;
-        int busID, busSeats, garageID, serviceID;
+        int busID, busSeats, garageID, serviceID, assignmentsID;
         
         //A Bus Object Created From A Row In The Result Of The Query:
         Bus b;
@@ -179,8 +188,13 @@ public class BusTableGateway {
               if (rs.wasNull()) {
                 serviceID = -1;
             }
+              
+            assignmentsID = rs.getInt(COLUMN_ASSIGNMENTS_ID);
+            if (rs.wasNull()) {
+              assignmentsID = -1;
+            }
 
-            b = new Bus(busID, registrationNo, busMake, busModel, busSeats, busEngineSize, purchaseDate, dueServiceDate, garageID, serviceID);
+            b = new Bus(busID, registrationNo, busMake, busModel, busSeats, busEngineSize, purchaseDate, dueServiceDate, garageID, serviceID, assignmentsID);
             buses.add(b);
         }
         
@@ -196,6 +210,7 @@ public class BusTableGateway {
        int numRowsAffected;
        int gid;
        int sid;
+       int aid;
        
        //The Required SQL INSERT Statement With Place Holders For The Values To Be Inserted Into The Database:
        query = "UPDATE " + TABLE_NAME + " SET " +
@@ -207,7 +222,8 @@ public class BusTableGateway {
             COLUMN_PURCHASE_DATE    + " = ?, " +
             COLUMN_DUE_SERVICE_DATE + " = ?, " +
             COLUMN_GARAGE_ID + " = ?, " +
-            COLUMN_SERVICE_ID + " = ? " +
+            COLUMN_SERVICE_ID + " = ?, " +
+            COLUMN_ASSIGNMENTS_ID + " = ? " +
             " WHERE " + COLUMN_BUS_ID + " = ?";
        
        //Create A PreparedStatement Object To Execute Te Query And Insert The New Values Into The Query:
@@ -235,7 +251,15 @@ public class BusTableGateway {
             stmt.setInt(9, sid);
         }
         
-        stmt.setInt(10, b.getBusID());
+        aid = b.getAssignmentsID();
+        if (aid == -1) {
+            stmt.setNull(10, java.sql.Types.INTEGER);
+        }
+        else {
+            stmt.setInt(10, aid);
+        }
+        
+        stmt.setInt(11, b.getBusID());
         
         //Execute The Query:
         numRowsAffected = stmt.executeUpdate();
