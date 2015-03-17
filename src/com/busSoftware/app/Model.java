@@ -25,28 +25,42 @@ public class Model {
     
     //Creates A List For All buses:
     List<Bus> buses;
+    //Creates A List For All garages:
     List<Garage> garages;
+    //Creates A List For All services:
     List<Service> services;
+    //Creates A List For All assignments:
     List<Assignment> assignments;
+    //Creates A List For All drivers:
+    List<Driver> drivers;
+    
     //Instance Of Bus Table Gateway:
     BusTableGateway busGateway;
+    //Instance Of Garage Table Gateway:
     GarageTableGateway garageGateway;
+    //Instance Of Service Table Gateway:
     ServiceTableGateway serviceGateway;
+    //Instance Of Assignment Table Gateway:
     AssignmentTableGateway assignmentGateway;
+    //Instance Of Driver Table Gateway:
+    DriverTableGateway driverGateway;
     
-    //Connection To Database Reference To Instance For BusTableGateway,Surronding The Block With A Try And Catch:
+    //Connection To Database Reference To Instance For Each Gateway,Surronding The Block With A Try And Catch:
     private Model(){
-        //Passing A Parameter To the BusTableGateway:
+        //Passing A Parameter To the Table Gateways:
         try {
             Connection conn = DataBaseConnection.getInstance();
             this.busGateway = new BusTableGateway(conn);
             this.garageGateway = new GarageTableGateway(conn);
             this.serviceGateway = new ServiceTableGateway(conn);
             this.assignmentGateway = new AssignmentTableGateway(conn);
+            this.driverGateway = new DriverTableGateway(conn);
             
             this.buses = this.busGateway.getBuses();
             this.garages = this.garageGateway.getGarage();
             this.services = this.serviceGateway.getService();
+            this.assignments = this.assignmentGateway.getAssignments();
+            this.drivers = this.driverGateway.getDriver();
         } 
         catch (ClassNotFoundException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -56,6 +70,9 @@ public class Model {
         }
     }
     
+    /*------------------------------------------------------------------------*/
+    /*-------------------------------BUS CODE---------------------------------*/
+    /*------------------------------------------------------------------------*/
     //Add Bus List Code:
     public boolean addBus(Bus b) {
         boolean result = false;
@@ -134,6 +151,9 @@ public class Model {
         return updated;
     }
     
+    /*------------------------------------------------------------------------*/
+    /*-------------------------------GARAGE CODE------------------------------*/
+    /*------------------------------------------------------------------------*/
     //Code Add Garage:
     public boolean addGarage(Garage g) {
         boolean result = false;
@@ -211,6 +231,10 @@ public class Model {
         return updated;
     }
     
+    
+    /*------------------------------------------------------------------------*/
+    /*-------------------------------SERVICE CODE-----------------------------*/
+    /*------------------------------------------------------------------------*/
     //Add Service List Code:
     public boolean addService(Service s) {
         boolean result = false;
@@ -289,6 +313,9 @@ public class Model {
         return updated;
     }
     
+    /*------------------------------------------------------------------------*/
+    /*-------------------------------ASSIGNMENTS CODE-------------------------*/
+    /*------------------------------------------------------------------------*/
     //Add Bus List Code:
     public boolean addAssignment(Assignment a) {
         boolean result = false;
@@ -359,6 +386,87 @@ public class Model {
         
         try {
             updated = this.assignmentGateway.updateAssignment(a);
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return updated;
+    }
+    
+    /*------------------------------------------------------------------------*/
+    /*-------------------------------DRIVER CODE------------------------------*/
+    /*------------------------------------------------------------------------*/
+    //Add Driver List Code:
+    public boolean addDriver(Driver d) {
+        boolean result = false;
+        try {
+            int driverID = this.driverGateway.insertDriver(d.getFName(), d.getLName(), d.getAssignmentsID());
+            if (driverID != -1) {
+                d.setDriverID(driverID);
+                this.drivers.add(d);
+                result = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    //Code Delete Driver:
+    public boolean removeDriver(Driver d) {
+        boolean removed = false;
+        
+        try {
+            removed = this.driverGateway.deleteDriver(d.getDriverID());
+            if (removed) {
+                removed = this.drivers.remove(d);
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return removed;
+    }
+    
+    //Get Driver List Code:
+    public List<Driver> getDrivers() {
+        try {
+            this.drivers = this.driverGateway.getDriver();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return this.drivers;
+    }
+
+    //Find Driver List Code:
+    Driver findDriverByDriverID(int driverID) {
+        Driver d = null;
+        int i = 0;
+        boolean found = false;
+        while (i < this.drivers.size() && !found) {
+            d = this.drivers.get(i);
+            if (d.getDriverID() == driverID) {
+                found = true;
+            }
+            else {
+                i++;
+            }
+        }
+        if (!found) {
+            d = null;
+        }
+        return d;
+    }
+
+    //Update Driver List Code:
+    boolean updateDriver(Driver d) {
+        boolean updated = false;
+        
+        try {
+            updated = this.driverGateway.updateDriver(d);
         }
         catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);

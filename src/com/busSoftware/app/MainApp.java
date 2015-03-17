@@ -37,7 +37,12 @@ public class MainApp {
             System.out.println("-14 Delete Existing Assignment.");
             System.out.println("-15 Edit Existing Assignment.");
             System.out.println("-16 View All Assignments.");
-            System.out.println("-17 Exit Tour Bus Company.");
+            System.out.println();
+            System.out.println("-17 Create A New Driver.");
+            System.out.println("-18 Delete Existing Driver.");
+            System.out.println("-19 Edit Existing Driver.");
+            System.out.println("-20 View All Drivers.");
+            System.out.println("-21 Exit Tour Bus Company.");
             System.out.println();
         
             System.out.print("-Enter Option:");
@@ -146,13 +151,41 @@ public class MainApp {
                     viewAssignments(model);
                     break;
                 }
+                
+                //To Create A New Driver:
+                case 17: {
+                    System.out.println("-Creating A New Driver.");
+                    createDriver(keyboard,model);
+                    break;
+                }
+                //To Delete A Existing Driver:
+                case 18: {
+                    System.out.println("-Deleting A Driver.");
+                    deleteDriver(keyboard,model);
+                    break;
+                }
+                //To Update A Existing Driver: 
+                case 19: {
+                    System.out.println("-Updating A Driver.");
+                    editDriver(keyboard, model);
+                    break;
+                }
+                //To View All Drivers:
+                case 20: {
+                    System.out.println("-Viewing All Drivers.");
+                    viewDrivers(model);
+                    break;
+                }
             }
         }
         //Once Not Equals To 5 Programes Runs Else Stops:
-        while (opt != 17);
+        while (opt != 21);
         System.out.println("-Exiting App.");
     }
     
+    /*------------------------------------------------------------------------*/
+    /*-------------------------------BUS CODE---------------------------------*/
+    /*------------------------------------------------------------------------*/
     //Code For Telling If Bus Was Created Or Not USing A Boolean In The Model Class:
     private static void createBus(Scanner keyboard, Model model) {
         Bus b = readBus(keyboard);
@@ -323,10 +356,10 @@ public class MainApp {
             b.setAssignmentsID(assignmentsID);
         }
     }
-    
-    
-    
-    
+       
+    /*------------------------------------------------------------------------*/
+    /*------------------------------GARAGE CODE-------------------------------*/
+    /*------------------------------------------------------------------------*/
     //Code For Telling If Garage Was Created Or Not USing A Boolean In The Model Class:
     private static void createGarage(Scanner keyboard, Model model) {
         Garage g = readGarage(keyboard);
@@ -450,15 +483,9 @@ public class MainApp {
         }  
     }
     
-    //GetString Methode:
-    private static String getString(Scanner keyboard, String prompt) {
-        System.out.print(prompt);
-        return keyboard.nextLine();
-    }
-    
-    
-    
-    
+    /*------------------------------------------------------------------------*/
+    /*------------------------------SERVICE CODE------------------------------*/
+    /*------------------------------------------------------------------------*/
     //Code For Telling If Service Was Created Or Not USing A Boolean In The Model Class:
     private static void createService(Scanner keyboard, Model model) {
         Service s = readService(keyboard);
@@ -569,8 +596,10 @@ public class MainApp {
         }
     }
     
-    
-     //Code For Telling If Assignment Was Created Or Not USing A Boolean In The Model Class:
+    /*------------------------------------------------------------------------*/
+    /*------------------------------ASSIGNMENT CODE---------------------------*/
+    /*------------------------------------------------------------------------*/
+    //Code For Telling If Assignment Was Created Or Not USing A Boolean In The Model Class:
     private static void createAssignment(Scanner keyboard, Model model) {
         Assignment a = readAssignment(keyboard);
         if (model.addAssignment(a)) {
@@ -685,6 +714,130 @@ public class MainApp {
         }
     }
     
+    /*------------------------------------------------------------------------*/
+    /*-------------------------------DRIVER CODE------------------------------*/
+    /*------------------------------------------------------------------------*/
+    //Code For Telling If Driver Was Created Or Not USing A Boolean In The Model Class:
+    private static void createDriver(Scanner keyboard, Model model) {
+        Driver d = readDriver(keyboard);
+        if (model.addDriver(d)) {
+            System.out.println("-New Driver Added To Database.");
+        }
+        else {
+            System.out.println("-New Driver Was'nt Added To Database.");
+        }
+        System.out.println();
+    }
+    
+    //Delete Methode:
+    private static void deleteDriver(Scanner keyboard, Model model) {
+        System.out.println("-Enter The ID Of The Driver You Want To Delete:");
+            int driverID = Integer.parseInt(keyboard.nextLine());
+            Driver d;
+                    
+            d = model.findDriverByDriverID(driverID);
+            if (d != null) {
+                if (model.removeDriver(d)) {
+                    System.out.println("-Driver Deleted.\n");
+                }
+                else {
+                    System.out.println("-Driver Not Deleted.\n");
+                }
+            }
+            else {
+                System.out.println("-Driver Not Found.\n");
+            }          
+    }
+    
+    //Edit Code If/Else If Table Is Updated Or Not:
+    private static void editDriver(Scanner kb, Model m) {
+        System.out.print("-Enter The Driver ID You Want To Edit: ");
+        int driverID = Integer.parseInt(kb.nextLine());
+        Driver d;
+        
+        d = m.findDriverByDriverID(driverID);
+        if (d != null) {
+            editDriverDetails(kb, d);
+            if (m. updateDriver(d)) {
+                System.out.println("-Driver Updated.\n");       
+            }
+            else {
+                System.out.println("-Driver Not Updated.\n");
+            }
+        }
+        else {
+            System.out.println("-Driver Not Found.\n");
+        }
+    }
+
+    //Code For Viewing All Drivers:
+    private static void viewDrivers(Model model) {
+        List<Driver> drivers = model.getDrivers();
+        System.out.println();
+        if (drivers.isEmpty()) {
+            System.out.println("-There Are No Drivers In The Database.");
+        }
+        else {
+            System.out.printf("%5s %30s %20s %20s\n", 
+                              "-Driver ID-", 
+                              "-First Name-", 
+                              "-Last Name-", 
+                              "-Assignments ID-");
+            for (Driver pr : drivers) {
+                System.out.printf("%7d %30s %20s %20d\n",
+                pr.getDriverID(),
+                pr.getFName(),
+                pr.getLName(),
+                pr.getAssignmentsID());
+            }
+        }
+        System.out.println();
+    }
+    
+    //Code For Creating A New Driver (Reads Input From Keyboard And Stores Into ReadDriver Object:
+    private static Driver readDriver(Scanner keyb) {
+        String fName, lName;
+        int assignmentsID;
+        String line1;
+        
+        fName = getString(keyb, "-Enter First Name: ");
+        lName = getString(keyb, "-Enter Last Name: ");
+        line1 = getString(keyb, "-Enter AssignmentsID: ");
+        assignmentsID = Integer.parseInt(line1);       
+        
+        Driver d =
+            new Driver(fName, lName, assignmentsID);
+        
+        return d;
+    }
+    
+    //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
+    private static void editDriverDetails(Scanner keyb, Driver d) {
+        String fName, lName;
+        int assignmentsID;
+        String line1;
+        
+        fName = getString(keyb, "-Enter First Name [" + d.getFName() + "]: ");
+        lName = getString(keyb, "-Enter Last Name [" + d.getLName() + "]: ");  
+        line1 = getString(keyb, "-Enter Assignments ID [" + d.getAssignmentsID() + "]: ");
+        
+        if (fName.length() != 0) {
+            d.setFName(fName);
+        }
+        if (lName.length() != 0) {
+            d.setLName(lName);
+        }
+        if (line1.length() != 0) {
+            assignmentsID = Integer.parseInt(line1);
+            d.setAssignmentsID(assignmentsID);
+        }
+    }
+    
+    //GetString Methode:
+    private static String getString(Scanner keyboard, String prompt) {
+        System.out.print(prompt);
+        return keyboard.nextLine();
+    }  
 }
 
     
