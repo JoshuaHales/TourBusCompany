@@ -18,26 +18,32 @@ public class MainApp {
         do{
             System.out.println("TOUR BUS COMPANY APP");
             System.out.println("---------------------");
+            System.out.println();
+            System.out.println("-BUS TABLE");
             System.out.println("-1 Create A New Bus.");
             System.out.println("-2 Delete Existing Bus.");
             System.out.println("-3 Edit Existing Buses.");
             System.out.println("-4 View All Buses.");
             System.out.println();
+            System.out.println("-GARAGE TABLE");
             System.out.println("-5 Create A New Garage.");
             System.out.println("-6 Delete Existing Garage.");
             System.out.println("-7 Edit Existing Garages.");
             System.out.println("-8 View All Garages.");
             System.out.println();
+            System.out.println("-SERVICE TABLE");
             System.out.println("-9 Create A New Service.");
             System.out.println("-10 Delete Existing Service.");
             System.out.println("-11 Edit Existing Service.");
             System.out.println("-12 View All Services.");
             System.out.println();
+            System.out.println("-ASSIGMENT TABLE");
             System.out.println("-13 Create A New Assignment.");
             System.out.println("-14 Delete Existing Assignment.");
             System.out.println("-15 Edit Existing Assignment.");
             System.out.println("-16 View All Assignments.");
             System.out.println();
+            System.out.println("-DRIVER TABLE");
             System.out.println("-17 Create A New Driver.");
             System.out.println("-18 Delete Existing Driver.");
             System.out.println("-19 Edit Existing Driver.");
@@ -151,7 +157,6 @@ public class MainApp {
                     viewAssignments(model);
                     break;
                 }
-                
                 //To Create A New Driver:
                 case 17: {
                     System.out.println("-Creating A New Driver.");
@@ -170,7 +175,7 @@ public class MainApp {
                     editDriver(keyboard, model);
                     break;
                 }
-                //To View All Drivers:
+                //To View All Driver:
                 case 20: {
                     System.out.println("-Viewing All Drivers.");
                     viewDrivers(model);
@@ -188,19 +193,26 @@ public class MainApp {
     /*------------------------------------------------------------------------*/
     //Code For Telling If Bus Was Created Or Not USing A Boolean In The Model Class:
     private static void createBus(Scanner keyboard, Model model) {
-        Bus b = readBus(keyboard);
-        if (model.addBus(b)) {
-            System.out.println("-New Bus Added To Database.");
+        try{        
+            Bus b = readBus(keyboard);
+            if (model.addBus(b)) {
+                System.out.println("-New Bus Added To Database.");
+            }
+            else {
+                System.out.println("-New Bus Was'nt Added To Database.");
+            }
+            System.out.println();
         }
-        else {
-            System.out.println("-New Bus Was'nt Added To Database.");
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
-        System.out.println();
     }
     
     //Delete Methode:
     private static void deleteBus(Scanner keyboard, Model model) {
-        System.out.println("-Enter The ID Of The Bus You Want To Delete:");
+        try{
+            System.out.println("-Enter The ID Of The Bus You Want To Delete:");
             int busID = Integer.parseInt(keyboard.nextLine());
             Bus b;
                     
@@ -215,27 +227,38 @@ public class MainApp {
             }
             else {
                 System.out.println("-Bus Not Found.\n");
-            }          
+            }
+        }
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
+        }
     }
     
     //Edit Code If/Else If Table Is Updated Or Not:
     private static void editBus(Scanner kb, Model m) {
-        System.out.print("-Enter The Bus ID You Want To Edit: ");
-        int busID = Integer.parseInt(kb.nextLine());
-        Bus b;
-        
-        b = m.findBusByBusID(busID);
-        if (b != null) {
-            editBusDetails(kb, b);
-            if (m. updateBus(b)) {
-                System.out.println("-Bus Updated.\n");       
+        try{
+            System.out.print("-Enter The Bus ID You Want To Edit: ");
+            int busID = Integer.parseInt(kb.nextLine());
+            Bus b;
+
+            b = m.findBusByBusID(busID);
+            if (b != null) {
+                editBusDetails(kb, b);
+                if (m. updateBus(b)) {
+                    System.out.println("-Bus Updated.\n");       
+                }
+                else {
+                    System.out.println("-Bus Not Updated.\n");
+                }
             }
             else {
-                System.out.println("-Bus Not Updated.\n");
+                System.out.println("-Bus Not Found.\n");
             }
         }
-        else {
-            System.out.println("-Bus Not Found.\n");
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
     }
 
@@ -306,75 +329,88 @@ public class MainApp {
     
     //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editBusDetails(Scanner keyb, Bus b) {
-        String registrationNo, busMake, busModel, busEngineSize, purchaseDate, dueServiceDate;
-        int busSeats, garageID, serviceID, assignmentsID;
-        String line1, line2, line3, line4;
-        
-        registrationNo = getString(keyb, "-Enter Registration Number [" + b.getRegistrationNo() + "]: ");
-        busMake = getString(keyb, "-Enter Bus Make [" + b.getBusMake() + "]: ");
-        busModel = getString(keyb, "-Enter Bus Model [" + b.getBusModel() + "]: ");
-        line1 = getString(keyb, "-Enter Number Of Bus Seats [" + b.getBusSeats() + "]: ");
-        busEngineSize = getString(keyb, "-Enter Bus Engine Size [" + b.getBusEngineSize() + "]: ");
-        purchaseDate = getString(keyb, "-Enter Bus Purchase Date [" + b.getPurchaseDate() + "]: ");
-        dueServiceDate = getString(keyb, "-Enter Bus Service Due Date [" + b.getDueServiceDate() + "]: ");
-        line2 = getString(keyb, "Enter Garage ID (Enter -1 For No Garage)[" + b.getGarageID() + "]: ");
-        line3 = getString(keyb, "Enter Service ID (Enter -1 For No Service)[" + b.getServiceID() + "]: ");
-        line4 = getString(keyb, "Enter Assignments ID (Enter -1 For No Assignments)[" + b.getAssignmentsID() + "]: ");
-        
-        if (registrationNo.length() != 0) {
-            b.setRegistrationNo(registrationNo);
+        try{
+            String registrationNo, busMake, busModel, busEngineSize, purchaseDate, dueServiceDate;
+            int busSeats, garageID, serviceID, assignmentsID;
+            String line1, line2, line3, line4;
+
+            registrationNo = getString(keyb, "-Enter Registration Number [" + b.getRegistrationNo() + "]: ");
+            busMake = getString(keyb, "-Enter Bus Make [" + b.getBusMake() + "]: ");
+            busModel = getString(keyb, "-Enter Bus Model [" + b.getBusModel() + "]: ");
+            line1 = getString(keyb, "-Enter Number Of Bus Seats [" + b.getBusSeats() + "]: ");
+            busEngineSize = getString(keyb, "-Enter Bus Engine Size [" + b.getBusEngineSize() + "]: ");
+            purchaseDate = getString(keyb, "-Enter Bus Purchase Date [" + b.getPurchaseDate() + "]: ");
+            dueServiceDate = getString(keyb, "-Enter Bus Service Due Date [" + b.getDueServiceDate() + "]: ");
+            line2 = getString(keyb, "Enter Garage ID (Enter -1 For No Garage)[" + b.getGarageID() + "]: ");
+            line3 = getString(keyb, "Enter Service ID (Enter -1 For No Service)[" + b.getServiceID() + "]: ");
+            line4 = getString(keyb, "Enter Assignments ID (Enter -1 For No Assignments)[" + b.getAssignmentsID() + "]: ");
+
+            if (registrationNo.length() != 0) {
+                b.setRegistrationNo(registrationNo);
+            }
+            if (busMake.length() != 0) {
+                b.setBusMake(busMake);
+            }
+            if (busModel.length() != 0) {
+                b.setBusModel(busModel);
+            }
+            if (line1.length() != 0) {
+                busSeats = Integer.parseInt(line1);
+                b.setBusSeats(busSeats);
+            }
+            if (busEngineSize.length() != 0) {
+                b.setBusEngineSize(busEngineSize);
+            }
+            if (purchaseDate.length() != 0) {
+                b.setPurchaseDate(purchaseDate);
+            }
+            if (dueServiceDate.length() != 0) {
+                b.setDueServiceDate(dueServiceDate);
+            }
+            if (line2.length() != 0) {
+                garageID = Integer.parseInt(line2);
+                b.setGarageID(garageID);
+            }
+            if (line3.length() != 0) {
+                serviceID = Integer.parseInt(line3);
+                b.setServiceID(serviceID);
+            }
+            if (line4.length() != 0) {
+                assignmentsID = Integer.parseInt(line4);
+                b.setAssignmentsID(assignmentsID);
+            }
         }
-        if (busMake.length() != 0) {
-            b.setBusMake(busMake);
-        }
-        if (busModel.length() != 0) {
-            b.setBusModel(busModel);
-        }
-        if (line1.length() != 0) {
-            busSeats = Integer.parseInt(line1);
-            b.setBusSeats(busSeats);
-        }
-        if (busEngineSize.length() != 0) {
-            b.setBusEngineSize(busEngineSize);
-        }
-        if (purchaseDate.length() != 0) {
-            b.setPurchaseDate(purchaseDate);
-        }
-        if (dueServiceDate.length() != 0) {
-            b.setDueServiceDate(dueServiceDate);
-        }
-        if (line2.length() != 0) {
-            garageID = Integer.parseInt(line2);
-            b.setGarageID(garageID);
-        }
-        if (line3.length() != 0) {
-            serviceID = Integer.parseInt(line3);
-            b.setServiceID(serviceID);
-        }
-        if (line4.length() != 0) {
-            assignmentsID = Integer.parseInt(line4);
-            b.setAssignmentsID(assignmentsID);
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
     }
        
     /*------------------------------------------------------------------------*/
     /*------------------------------GARAGE CODE-------------------------------*/
     /*------------------------------------------------------------------------*/
-    //Code For Telling If Garage Was Created Or Not USing A Boolean In The Model Class:
+    //Code For Telling If Garage Was Created Or Not Using A Boolean In The Model Class:
     private static void createGarage(Scanner keyboard, Model model) {
-        Garage g = readGarage(keyboard);
-        if (model.addGarage(g)) {
-            System.out.println("-New Garage Added To Database.");
+        try{
+            Garage g = readGarage(keyboard);
+            if (model.addGarage(g)) {
+                System.out.println("-New Garage Added To Database.");
+            }
+            else {
+                System.out.println("-New Garage Was'nt Added To Database.");
+            }
+            System.out.println();
         }
-        else {
-            System.out.println("-New Garage Was'nt Added To Database.");
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
-        System.out.println();
     }
     
     //Delete Methode:
     private static void deleteGarage(Scanner keyboard, Model model) {
-        System.out.println("-Enter The ID Of The Garage You Want To Delete:");
+        try{
+            System.out.println("-Enter The ID Of The Garage You Want To Delete:");
             int garageID = Integer.parseInt(keyboard.nextLine());
             Garage g;
                     
@@ -390,26 +426,37 @@ public class MainApp {
             else {
                 System.out.println("-Garage Not Found.\n");
             }          
+        }
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
+        }
     }
     
     //Edit Code If/Else If Table Is Updated Or Not:
     private static void editGarage(Scanner kb, Model m) {
-        System.out.print("-Enter The Garage ID You Want To Edit: ");
-        int garageID = Integer.parseInt(kb.nextLine());
-        Garage g;
-        
-        g = m.findGarageByGarageID(garageID);
-        if (g != null) {
-            editGarageDetails(kb, g);
-            if (m. updateGarage(g)) {
-                System.out.println("-Garage Updated.\n");       
+        try{
+            System.out.print("-Enter The Garage ID You Want To Edit: ");
+            int garageID = Integer.parseInt(kb.nextLine());
+            Garage g;
+
+            g = m.findGarageByGarageID(garageID);
+            if (g != null) {
+                editGarageDetails(kb, g);
+                if (m. updateGarage(g)) {
+                    System.out.println("-Garage Updated.\n");       
+                }
+                else {
+                    System.out.println("-Garage Not Updated.\n");
+                }
             }
             else {
-                System.out.println("-Garage Not Updated.\n");
+                System.out.println("-Garage Not Found.\n");
             }
         }
-        else {
-            System.out.println("-Garage Not Found.\n");
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
     }
 
@@ -459,48 +506,61 @@ public class MainApp {
     
     //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editGarageDetails(Scanner keyb, Garage g) {
-        String garageName, garageAddress, managerName;
-        int garagePhoneNo;
-        String line1;
-        
-        garageName = getString(keyb, "-Enter Garage Name [" + g.getGarageName() + "]: ");
-        garageAddress = getString(keyb, "-Enter Garage Address [" + g.getGarageAddress() + "]: ");
-        line1 = getString(keyb, "-Enter Garage Phone Number [" + g.getGaragePhoneNo() + "]: ");
-        managerName = getString(keyb, "-Enter Manager Name [" + g.getManagerName() + "]: ");
-        
-        if (garageName.length() != 0) {
-            g.setGarageName(garageName);
+        try{
+            String garageName, garageAddress, managerName;
+            int garagePhoneNo;
+            String line1;
+
+            garageName = getString(keyb, "-Enter Garage Name [" + g.getGarageName() + "]: ");
+            garageAddress = getString(keyb, "-Enter Garage Address [" + g.getGarageAddress() + "]: ");
+            line1 = getString(keyb, "-Enter Garage Phone Number [" + g.getGaragePhoneNo() + "]: ");
+            managerName = getString(keyb, "-Enter Manager Name [" + g.getManagerName() + "]: ");
+
+            if (garageName.length() != 0) {
+                g.setGarageName(garageName);
+            }
+            if (garageAddress.length() != 0) {
+                g.setGarageAddress(garageAddress);
+            }
+            if (line1.length() != 0) {
+                garagePhoneNo = Integer.parseInt(line1);
+                g.setGaragePhoneNo(garagePhoneNo);
+            }
+            if (managerName.length() != 0) {
+                g.setManagerName(managerName);
+            }
         }
-        if (garageAddress.length() != 0) {
-            g.setGarageAddress(garageAddress);
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
-        if (line1.length() != 0) {
-            garagePhoneNo = Integer.parseInt(line1);
-            g.setGaragePhoneNo(garagePhoneNo);
-        }
-        if (managerName.length() != 0) {
-            g.setManagerName(managerName);
-        }  
     }
     
     /*------------------------------------------------------------------------*/
     /*------------------------------SERVICE CODE------------------------------*/
     /*------------------------------------------------------------------------*/
-    //Code For Telling If Service Was Created Or Not USing A Boolean In The Model Class:
+    //Code For Telling If Service Was Created Or Not Using A Boolean In The Model Class:
     private static void createService(Scanner keyboard, Model model) {
-        Service s = readService(keyboard);
-        if (model.addService(s)) {
-            System.out.println("-New Service Added To Database.");
+        try{
+            Service s = readService(keyboard);
+            if (model.addService(s)) {
+                System.out.println("-New Service Added To Database.");
+            }
+            else {
+                System.out.println("-New Service Was'nt Added To Database.");
+            }
+            System.out.println();
         }
-        else {
-            System.out.println("-New Service Was'nt Added To Database.");
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
-        System.out.println();
     }
     
     //Delete Methode:
     private static void deleteService(Scanner keyboard, Model model) {
-        System.out.println("-Enter The ID Of The Service You Want To Delete:");
+        try{
+            System.out.println("-Enter The ID Of The Service You Want To Delete:");
             int serviceID = Integer.parseInt(keyboard.nextLine());
             Service s;
                     
@@ -515,27 +575,38 @@ public class MainApp {
             }
             else {
                 System.out.println("-Service Not Found.\n");
-            }          
+            }
+        }
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
+        }
     }
     
     //Edit Code If/Else If Table Is Updated Or Not:
     private static void editService(Scanner kb, Model m) {
-        System.out.print("-Enter The Service ID You Want To Edit: ");
-        int serviceID = Integer.parseInt(kb.nextLine());
-        Service s;
-        
-        s = m.findServiceByServiceID(serviceID);
-        if (s != null) {
-            editServiceDetails(kb, s);
-            if (m. updateService(s)) {
-                System.out.println("-Service Updated.\n");       
+        try{
+            System.out.print("-Enter The Service ID You Want To Edit: ");
+            int serviceID = Integer.parseInt(kb.nextLine());
+            Service s;
+
+            s = m.findServiceByServiceID(serviceID);
+            if (s != null) {
+                editServiceDetails(kb, s);
+                if (m. updateService(s)) {
+                    System.out.println("-Service Updated.\n");       
+                }
+                else {
+                    System.out.println("-Service Not Updated.\n");
+                }
             }
             else {
-                System.out.println("-Service Not Updated.\n");
+                System.out.println("-Service Not Found.\n");
             }
         }
-        else {
-            System.out.println("-Service Not Found.\n");
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
     }
 
@@ -563,7 +634,7 @@ public class MainApp {
         System.out.println();
     }
     
-    //Code For Creating A New Bus (Reads Input From Keyboard And Stores Into ReadBus Object:
+    //Code For Creating A New Service (Reads Input From Keyboard And Stores Into ReadBus Object:
     private static Service readService(Scanner keyb) {
         String serviceDate, jobsDone, mechanicName;
         
@@ -579,41 +650,54 @@ public class MainApp {
     
     //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editServiceDetails(Scanner keyb, Service s) {
-        String serviceDate, jobsDone, mechanicName;
-        
-        serviceDate = getString(keyb, "-Enter Service Date [" + s.getServiceDate() + "]: ");
-        jobsDone = getString(keyb, "-Enter Jobs Done [" + s.getJobsDone() + "]: ");
-        mechanicName = getString(keyb, "-Enter Mechanic's Name [" + s.getMechanicName() + "]: ");
-        
-        if (serviceDate.length() != 0) {
-            s.setServiceDate(serviceDate);
+        try{
+            String serviceDate, jobsDone, mechanicName;
+
+            serviceDate = getString(keyb, "-Enter Service Date [" + s.getServiceDate() + "]: ");
+            jobsDone = getString(keyb, "-Enter Jobs Done [" + s.getJobsDone() + "]: ");
+            mechanicName = getString(keyb, "-Enter Mechanic's Name [" + s.getMechanicName() + "]: ");
+
+            if (serviceDate.length() != 0) {
+                s.setServiceDate(serviceDate);
+            }
+            if (jobsDone.length() != 0) {
+                s.setJobsDone(jobsDone);
+            }
+            if (mechanicName.length() != 0) {
+                s.setMechanicName(mechanicName);
+            }
         }
-        if (jobsDone.length() != 0) {
-            s.setJobsDone(jobsDone);
-        }
-        if (mechanicName.length() != 0) {
-            s.setMechanicName(mechanicName);
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
     }
     
     /*------------------------------------------------------------------------*/
     /*------------------------------ASSIGNMENT CODE---------------------------*/
     /*------------------------------------------------------------------------*/
-    //Code For Telling If Assignment Was Created Or Not USing A Boolean In The Model Class:
+    //Code For Telling If Assignment Was Created Or Not Using A Boolean In The Model Class:
     private static void createAssignment(Scanner keyboard, Model model) {
-        Assignment a = readAssignment(keyboard);
-        if (model.addAssignment(a)) {
-            System.out.println("-New Assignment Added To Database.");
+        try{
+            Assignment a = readAssignment(keyboard);
+            if (model.addAssignment(a)) {
+                System.out.println("-New Assignment Added To Database.");
+            }
+            else {
+                System.out.println("-New Assignment Was'nt Added To Database.");
+            }
+            System.out.println();
         }
-        else {
-            System.out.println("-New Assignment Was'nt Added To Database.");
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
-        System.out.println();
     }
     
     //Delete Methode:
     private static void deleteAssignment(Scanner keyboard, Model model) {
-        System.out.println("-Enter The ID Of The Assignment You Want To Delete:");
+        try{
+            System.out.println("-Enter The ID Of The Assignment You Want To Delete:");
             int assignmentsID = Integer.parseInt(keyboard.nextLine());
             Assignment a;
                     
@@ -628,31 +712,42 @@ public class MainApp {
             }
             else {
                 System.out.println("-Assignment Not Found.\n");
-            }          
+            }
+        }
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
+        }
     }
     
     //Edit Code If/Else If Table Is Updated Or Not:
     private static void editAssignment(Scanner kb, Model m) {
-        System.out.print("-Enter The Assignment ID You Want To Edit: ");
-        int assignmentsID = Integer.parseInt(kb.nextLine());
-        Assignment a;
-        
-        a = m.findAssignmentByAssignmentsID(assignmentsID);
-        if (a != null) {
-            editAssignmentDetails(kb, a);
-            if (m. updateAssignment(a)) {
-                System.out.println("-Assignment Updated.\n");       
+        try{
+            System.out.print("-Enter The Assignment ID You Want To Edit: ");
+            int assignmentsID = Integer.parseInt(kb.nextLine());
+            Assignment a;
+
+            a = m.findAssignmentByAssignmentsID(assignmentsID);
+            if (a != null) {
+                editAssignmentDetails(kb, a);
+                if (m. updateAssignment(a)) {
+                    System.out.println("-Assignment Updated.\n");       
+                }
+                else {
+                    System.out.println("-Assignment Not Updated.\n");
+                }
             }
             else {
-                System.out.println("-Assignment Not Updated.\n");
+                System.out.println("-Service Not Found.\n");
             }
         }
-        else {
-            System.out.println("-Service Not Found.\n");
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
     }
 
-    //Code For Viewing All Services:
+    //Code For Viewing All Assignments:
     private static void viewAssignments(Model model) {
         List<Assignment> assignments = model.getAssignments();
         System.out.println();
@@ -678,7 +773,7 @@ public class MainApp {
         System.out.println();
     }
     
-    //Code For Creating A New Bus (Reads Input From Keyboard And Stores Into ReadBus Object:
+    //Code For Creating A New Assignment (Reads Input From Keyboard And Stores Into ReadAssignment Object:
     private static Assignment readAssignment(Scanner keyb) {
         String description, assignmentsDate;
         int busID, driverID;
@@ -700,38 +795,51 @@ public class MainApp {
     
     //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editAssignmentDetails(Scanner keyb, Assignment a) {
-       String description, assignmentsDate;
-       int busID, driverID;
-       String line1, line2;
-        
-        line1 = getString(keyb, "-Enter Bus ID [" + a.getBusID() + "]: ");
-        line2 = getString(keyb, "-Enter Garage Driver ID [" + a.getDriverID() + "]: ");
-        description = getString(keyb, "-Enter Job Desciption [" + a.getDescription() + "]: ");
-        assignmentsDate = getString(keyb, "-Enter Assignment Date [" + a.getAssignmentsDate() + "]: ");
-        
-        if (assignmentsDate.length() != 0) {
-            a.setAssignmentsDate(assignmentsDate);
+       try{
+            String description, assignmentsDate;
+            int busID, driverID;
+            String line1, line2;
+
+            line1 = getString(keyb, "-Enter Bus ID [" + a.getBusID() + "]: ");
+            line2 = getString(keyb, "-Enter Garage Driver ID [" + a.getDriverID() + "]: ");
+            description = getString(keyb, "-Enter Job Desciption [" + a.getDescription() + "]: ");
+            assignmentsDate = getString(keyb, "-Enter Assignment Date [" + a.getAssignmentsDate() + "]: ");
+
+            if (assignmentsDate.length() != 0) {
+                 a.setAssignmentsDate(assignmentsDate);
+            }
+       }
+       catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
     }
     
     /*------------------------------------------------------------------------*/
     /*-------------------------------DRIVER CODE------------------------------*/
     /*------------------------------------------------------------------------*/
-    //Code For Telling If Driver Was Created Or Not USing A Boolean In The Model Class:
+    //Code For Telling If Driver Was Created Or Not Using A Boolean In The Model Class:
     private static void createDriver(Scanner keyboard, Model model) {
-        Driver d = readDriver(keyboard);
-        if (model.addDriver(d)) {
-            System.out.println("-New Driver Added To Database.");
+        try{
+            Driver d = readDriver(keyboard);
+            if (model.addDriver(d)) {
+                System.out.println("-New Driver Added To Database.");
+            }
+            else {
+                System.out.println("-New Driver Was'nt Added To Database.");
+            }
+            System.out.println();
         }
-        else {
-            System.out.println("-New Driver Was'nt Added To Database.");
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
-        System.out.println();
     }
     
     //Delete Methode:
     private static void deleteDriver(Scanner keyboard, Model model) {
-        System.out.println("-Enter The ID Of The Driver You Want To Delete:");
+        try{
+            System.out.println("-Enter The ID Of The Driver You Want To Delete:");
             int driverID = Integer.parseInt(keyboard.nextLine());
             Driver d;
                     
@@ -746,27 +854,38 @@ public class MainApp {
             }
             else {
                 System.out.println("-Driver Not Found.\n");
-            }          
+            }
+        }
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
+        }
     }
     
     //Edit Code If/Else If Table Is Updated Or Not:
     private static void editDriver(Scanner kb, Model m) {
-        System.out.print("-Enter The Driver ID You Want To Edit: ");
-        int driverID = Integer.parseInt(kb.nextLine());
-        Driver d;
-        
-        d = m.findDriverByDriverID(driverID);
-        if (d != null) {
-            editDriverDetails(kb, d);
-            if (m. updateDriver(d)) {
-                System.out.println("-Driver Updated.\n");       
+        try{
+            System.out.print("-Enter The Driver ID You Want To Edit: ");
+            int driverID = Integer.parseInt(kb.nextLine());
+            Driver d;
+
+            d = m.findDriverByDriverID(driverID);
+            if (d != null) {
+                editDriverDetails(kb, d);
+                if (m. updateDriver(d)) {
+                    System.out.println("-Driver Updated.\n");       
+                }
+                else {
+                    System.out.println("-Driver Not Updated.\n");
+                }
             }
             else {
-                System.out.println("-Driver Not Updated.\n");
+                System.out.println("-Driver Not Found.\n");
             }
         }
-        else {
-            System.out.println("-Driver Not Found.\n");
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
     }
 
@@ -813,24 +932,31 @@ public class MainApp {
     
     //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editDriverDetails(Scanner keyb, Driver d) {
-        String fName, lName;
-        int assignmentsID;
-        String line1;
-        
-        fName = getString(keyb, "-Enter First Name [" + d.getFName() + "]: ");
-        lName = getString(keyb, "-Enter Last Name [" + d.getLName() + "]: ");  
-        line1 = getString(keyb, "-Enter Assignments ID [" + d.getAssignmentsID() + "]: ");
-        
-        if (fName.length() != 0) {
-            d.setFName(fName);
+        try{
+            String fName, lName;
+            int assignmentsID;
+            String line1;
+
+            fName = getString(keyb, "-Enter First Name [" + d.getFName() + "]: ");
+            lName = getString(keyb, "-Enter Last Name [" + d.getLName() + "]: ");  
+            line1 = getString(keyb, "-Enter Assignments ID [" + d.getAssignmentsID() + "]: ");
+
+            if (fName.length() != 0) {
+                d.setFName(fName);
+            }
+            if (lName.length() != 0) {
+                d.setLName(lName);
+            }
+            if (line1.length() != 0) {
+                assignmentsID = Integer.parseInt(line1);
+                d.setAssignmentsID(assignmentsID);
+            }
         }
-        if (lName.length() != 0) {
-            d.setLName(lName);
+        catch (NumberFormatException e){
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
-        if (line1.length() != 0) {
-            assignmentsID = Integer.parseInt(line1);
-            d.setAssignmentsID(assignmentsID);
-        }
+                
     }
     
     //GetString Methode:
