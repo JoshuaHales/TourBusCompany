@@ -36,7 +36,7 @@ public class MainApp {
                 System.out.println("-2 Delete Existing Bus.");
                 System.out.println("-3 Edit Existing Bus.");
                 System.out.println("-4 View All Buses.");
-                System.out.println("-5 Exit Tour Bus Company.");
+                System.out.println("-5 Back To Tables.");
 
                 System.out.print("-Enter Option:");
                 String line = keyboard.nextLine();
@@ -87,7 +87,7 @@ public class MainApp {
                 System.out.println("-2 Delete Existing Garage.");
                 System.out.println("-3 Edit Existing Garage.");
                 System.out.println("-4 View All Garages.");
-                System.out.println("-5 Exit Tour Bus Company.");
+                System.out.println("-5 Back To Tables.");
 
                 System.out.print("-Enter Option:");
                 String line = keyboard.nextLine();
@@ -138,7 +138,7 @@ public class MainApp {
                 System.out.println("-2 Delete Existing Service.");
                 System.out.println("-3 Edit Existing Service.");
                 System.out.println("-4 View All Services.");
-                System.out.println("-5 Exit Tour Bus Company.");
+                System.out.println("-5 Back To Tables.");
 
                 System.out.print("-Enter Option:");
                 String line = keyboard.nextLine();
@@ -189,7 +189,7 @@ public class MainApp {
                 System.out.println("-2 Delete Existing Assignment.");
                 System.out.println("-3 Edit Existing Assignment.");
                 System.out.println("-4 View All Assignments.");
-                System.out.println("-5 Exit Tour Bus Company.");
+                System.out.println("-5 Back To Tables.");
 
                 System.out.print("-Enter Option:");
                 String line = keyboard.nextLine();
@@ -240,7 +240,7 @@ public class MainApp {
                 System.out.println("-2 Delete Existing Driver.");
                 System.out.println("-3 Edit Existing Driver.");
                 System.out.println("-4 View All Drivers.");
-                System.out.println("-5 Exit Tour Bus Company.");
+                System.out.println("-5 Back To Tables.");
 
                 System.out.print("-Enter Option:");
                 String line = keyboard.nextLine();
