@@ -24,7 +24,7 @@ public class MainApp {
                 System.out.println("-4 ASSIGNMENT TABLE");
                 System.out.println("-5 DRIVER TABLE");
                 System.out.println("-6 EXIT APP");
-                System.out.println("-Choose A Table: ");
+                System.out.println("- Choose A Table: ");
                 option = keyboard.nextLine();
                 if (option.equals("Bus") || option.equals("bus") || option.equals("b") || option.equals("1")) {
                     doBusMenu(keyboard, model);
