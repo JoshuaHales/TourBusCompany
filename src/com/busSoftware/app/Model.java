@@ -119,22 +119,22 @@ public class Model {
     }
     
     //Video point 17,42mins
-    /*//Get Bus List Code:
-    public List<Bus> getBusByGarageID(int garageID) {
+    //Get Bus List Code:
+    public List<Bus> getBusesByGarageID(int garageID) {
         List<Bus> list = new ArrayList<Bus>();
         for (Bus b : this.buses) {
-            if (b.getGarageID() = garageID) {
+            if(b.getGarageID() == garageID) {
                 list.add(b);
             }
         }
         return list;
-    }*/
+    }
 
     //Find Bus List Code:
     Bus findBusByBusID(int busID) {
         Bus b = null;
         int i = 0;
-        boolean test = true;
+        //boolean test = true;
         boolean found = false;
         while (i < this.buses.size() && !found) {
             b = this.buses.get(i);
