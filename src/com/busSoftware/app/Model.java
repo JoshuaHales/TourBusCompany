@@ -4,6 +4,7 @@ package com.busSoftware.app;
 //Imported Code Libraries:
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,11 +117,24 @@ public class Model {
         }
         return this.buses;
     }
+    
+    //Video point 17,42mins
+    /*//Get Bus List Code:
+    public List<Bus> getBusByGarageID(int garageID) {
+        List<Bus> list = new ArrayList<Bus>();
+        for (Bus b : this.buses) {
+            if (b.getGarageID() = garageID) {
+                list.add(b);
+            }
+        }
+        return list;
+    }*/
 
     //Find Bus List Code:
     Bus findBusByBusID(int busID) {
         Bus b = null;
         int i = 0;
+        boolean test = true;
         boolean found = false;
         while (i < this.buses.size() && !found) {
             b = this.buses.get(i);

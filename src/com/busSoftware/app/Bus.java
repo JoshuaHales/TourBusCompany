@@ -122,4 +122,8 @@ public class Bus {
     public void setAssignmentsID(int assignmentsID){
         this.assignmentsID = assignmentsID;
     }
+
+    boolean isEmpty() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -125,10 +125,11 @@ public class MainApp {
                     "-Bus Engine Size-",
                     "-Purchase Date-",
                     "-Service Due Date-",
-                    "-Garage Name-",
+                    "-Garage Manager Name-",
                     "-Services ID-",
                     "-Assignments ID-");
             for (Bus pr : buses) {
+                Garage g = model.findGarageByGarageID(pr.getGarageID());
                 System.out.printf("%7d %30s %20s %20s %20d %25s %25s %25s %25s %25d %25d\n",
                         pr.getBusID(),
                         pr.getRegistrationNo(),
@@ -138,12 +139,45 @@ public class MainApp {
                         pr.getBusEngineSize(),
                         pr.getPurchaseDate(),
                         pr.getDueServiceDate(),
-                        pr.getGarageID(),
+                        (g != null) ? g.getManagerName() : "", //Manager Name Is Not Null Will Print Out Name Else Will Print Out A Empty String
                         pr.getServiceID(),
                         pr.getAssignmentsID());
             }
         }
         System.out.println();
+    }
+    
+    //View Single Bus Methode:
+    private static void viewBus(Scanner keyboard, Model model) {
+        try {
+            System.out.println("-Enter The ID Of The Bus You Want To View:");
+            int busID = Integer.parseInt(keyboard.nextLine());
+            Bus b;
+
+            b = model.findBusByBusID(busID);
+            if (b != null) {
+                Garage g = model.findGarageByGarageID(b.getGarageID());
+                System.out.println();
+                System.out.println("Bus ID              : " + b.getBusID());
+                System.out.println("Registration Number : " + b.getRegistrationNo());
+                System.out.println("Bus Make            : " + b.getBusMake());
+                System.out.println("Bus Model           : " + b.getBusModel());
+                System.out.println("Bus Seats           : " + b.getBusSeats());
+                System.out.println("Bus Engine Size     : " + b.getBusEngineSize());
+                System.out.println("Bus Purchase Date   : " + b.getPurchaseDate());
+                System.out.println("Bus Due Service Date: " + b.getDueServiceDate());
+                System.out.println("Garage Name         : " + ((g != null) ? g.getManagerName() : ""));
+                System.out.println("Sevice ID           : " + b.getServiceID());
+                System.out.println("Assignments ID      : " + b.getAssignmentsID());
+                System.out.println();
+            } else {
+                System.out.println("-Bus Not Found.\n");
+                System.out.println();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
+        }
     }
 
     //Code For Creating A New Bus (Reads Input From Keyboard And Stores Into ReadBus Object:
@@ -321,6 +355,32 @@ public class MainApp {
         }
         System.out.println();
     }
+    
+    //View Single Garage Methode:
+    private static void viewGarage(Scanner keyboard, Model model) {
+        try {
+            System.out.println("-Enter The ID Of The Garage You Want To View:");
+            int garageID = Integer.parseInt(keyboard.nextLine());
+            Garage g;
+
+            g = model.findGarageByGarageID(garageID);
+            if (g != null) {
+                System.out.println();
+                System.out.println("Garage ID          : " + g.getGarageID());
+                System.out.println("Garage Name        : " + g.getGarageName());
+                System.out.println("Garage Address     : " + g.getGarageAddress());
+                System.out.println("Garage Phone Number: " + g.getGaragePhoneNo());
+                System.out.println("Manager Name       : " + g.getManagerName());
+                System.out.println();
+            } else {
+                System.out.println("-Garage Not Found.\n");
+                System.out.println();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
+        }
+    }
 
     //Code For Creating A New Garage (Reads Input From Keyboard And Stores Into ReadGarage Object:
     private static Garage readGarage(Scanner keyb) {
@@ -459,6 +519,31 @@ public class MainApp {
         }
         System.out.println();
     }
+    
+    //View Single Service Methode:
+    private static void viewService(Scanner keyboard, Model model) {
+        try {
+            System.out.println("-Enter The ID Of The Service You Want To View:");
+            int serviceID = Integer.parseInt(keyboard.nextLine());
+            Service s;
+
+            s = model.findServiceByServiceID(serviceID);
+            if (s != null) {
+                System.out.println();
+                System.out.println("service ID   : " + s.getServiceID());
+                System.out.println("Service Date : " + s.getServiceDate());
+                System.out.println("Jobs Done    : " + s.getJobsDone());
+                System.out.println("Mechanic Name: " + s.getMechanicName());
+                System.out.println();
+            } else {
+                System.out.println("-Service Not Found.\n");
+                System.out.println();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
+        }
+    }
 
     //Code For Creating A New Service (Reads Input From Keyboard And Stores Into ReadBus Object:
     private static Service readService(Scanner keyb) {
@@ -587,6 +672,32 @@ public class MainApp {
             }
         }
         System.out.println();
+    }
+    
+    //View Single Assignment Methode:
+    private static void viewAssignment(Scanner keyboard, Model model) {
+        try {
+            System.out.println("-Enter The ID Of The Assignment You Want To View:");
+            int assignmentsID = Integer.parseInt(keyboard.nextLine());
+            Assignment a;
+
+            a = model.findAssignmentByAssignmentsID(assignmentsID);
+            if (a != null) {
+                System.out.println();
+                System.out.println("Assignment ID  : " + a.getAssignmentsID());
+                System.out.println("Bus ID         : " + a.getBusID());
+                System.out.println("Driver ID      : " + a.getDriverID());
+                System.out.println("Description    : " + a.getDescription());
+                System.out.println("Assignment Date: " + a.getAssignmentsDate());
+                System.out.println();
+            } else {
+                System.out.println("-Assignment Not Found.\n");
+                System.out.println();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
+        }
     }
 
     //Code For Creating A New Assignment (Reads Input From Keyboard And Stores Into ReadAssignment Object:
@@ -717,6 +828,31 @@ public class MainApp {
         }
         System.out.println();
     }
+    
+     //View Single Driver Methode:
+    private static void viewDriver(Scanner keyboard, Model model) {
+        try {
+            System.out.println("-Enter The ID Of The Driver You Want To View:");
+            int driverID = Integer.parseInt(keyboard.nextLine());
+            Driver d;
+
+            d = model.findDriverByDriverID(driverID);
+            if (d != null) {
+                System.out.println();
+                System.out.println("Driver ID        : " + d.getDriverID());
+                System.out.println("Driver First Name: " + d.getFName());
+                System.out.println("Driver Last Name : " + d.getLName());
+                System.out.println("Assignment ID    : " + d.getAssignmentsID());
+                System.out.println();
+            } else {
+                System.out.println("-Driver Not Found.\n");
+                System.out.println();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("-Incorrect Data Type Or Null Input.");
+            System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
+        }
+    }
 
     //Code For Creating A New Driver (Reads Input From Keyboard And Stores Into ReadDriver Object:
     private static Driver readDriver(Scanner keyb) {
@@ -782,7 +918,8 @@ public class MainApp {
             System.out.println("-2 Delete Existing Bus.");
             System.out.println("-3 Edit Existing Bus.");
             System.out.println("-4 View All Buses.");
-            System.out.println("-5 Back To Tables.");
+            System.out.println("-5 View Single Bus.");
+            System.out.println("-6 Back To Tables.");
 
             System.out.print("-Enter Option:");
             String line = keyboard.nextLine();
@@ -815,9 +952,15 @@ public class MainApp {
                     viewBuses(model);
                     break;
                 }
+                //To View All Buses: 
+                case 5: {
+                    System.out.println("-Viewing Single Bus.");
+                    viewBus(keyboard, model);
+                    break;
+                }
             }
         } //Once Not Equals To 5 Programes Runs Else Stops:
-        while (opt != 5);
+        while (opt != 6);
     }
 
     private static void doGarageMenu(Scanner keyboard, Model model) {
@@ -833,7 +976,8 @@ public class MainApp {
             System.out.println("-2 Delete Existing Garage.");
             System.out.println("-3 Edit Existing Garage.");
             System.out.println("-4 View All Garages.");
-            System.out.println("-5 Back To Tables.");
+            System.out.println("-5 View Single Garage.");
+            System.out.println("-6 Back To Tables.");
 
             System.out.print("-Enter Option:");
             String line = keyboard.nextLine();
@@ -862,13 +1006,19 @@ public class MainApp {
                 }
                 //To View All Garages: 
                 case 4: {
-                    System.out.println("-Viewing All Garage.");
+                    System.out.println("-Viewing All Garages.");
                     viewGarages(model);
+                    break;
+                }
+                //To View Single Garage: 
+                case 5: {
+                    System.out.println("-Viewing Single Garage.");
+                    viewGarage(keyboard, model);
                     break;
                 }
             }
         } //Once Not Equals To 5 Programes Runs Else Stops:
-        while (opt != 5);
+        while (opt != 6);
     }
 
     private static void doServiceMenu(Scanner keyboard, Model model) {
@@ -884,7 +1034,8 @@ public class MainApp {
             System.out.println("-2 Delete Existing Service.");
             System.out.println("-3 Edit Existing Service.");
             System.out.println("-4 View All Services.");
-            System.out.println("-5 Back To Tables.");
+            System.out.println("-5 View Single Service.");
+            System.out.println("-6 Back To Tables.");
 
             System.out.print("-Enter Option:");
             String line = keyboard.nextLine();
@@ -917,9 +1068,15 @@ public class MainApp {
                     viewServices(model);
                     break;
                 }
+                //To View Single Service: 
+                 case 5: {
+                    System.out.println("-Viewing All Services.");
+                    viewService(keyboard,model);
+                    break;
+                }
             }
         } //Once Not Equals To 5 Programes Runs Else Stops:
-        while (opt != 5);
+        while (opt != 6);
     }
 
     private static void doAssignmentMenu(Scanner keyboard, Model model) {
@@ -935,7 +1092,8 @@ public class MainApp {
             System.out.println("-2 Delete Existing Assignment.");
             System.out.println("-3 Edit Existing Assignment.");
             System.out.println("-4 View All Assignments.");
-            System.out.println("-5 Back To Tables.");
+            System.out.println("-5 View Single Assignment.");
+            System.out.println("-6 Back To Tables.");
 
             System.out.print("-Enter Option:");
             String line = keyboard.nextLine();
@@ -944,33 +1102,39 @@ public class MainApp {
             //If Options Is CLicked Then Break:
             System.out.println("-You Chose Option: " + opt);
             switch (opt) {
-                //To Create A New Service:
+                //To Create A New Assignment:
                 case 1: {
                     System.out.println("-Creating A New Assignment.");
                     createAssignment(keyboard, model);
                     break;
                 }
-                //To Delete A Existing Service:
+                //To Delete A Existing Assignment:
                 case 2: {
                     System.out.println("-Deleting A Assignment.");
                     deleteAssignment(keyboard, model);
                     break;
                 }
-                //To Update A Existing Service: 
+                //To Update A Existing Assignment: 
                 case 3: {
                     System.out.println("-Updating A Assignment.");
                     editAssignment(keyboard, model);
                     break;
                 }
-                //To View All Services: 
+                //To View All Assignments: 
                 case 4: {
                     System.out.println("-Viewing All Assignments.");
                     viewAssignments(model);
                     break;
                 }
+                 //To View All Assignments: 
+                case 5: {
+                    System.out.println("-Viewing Single Assignment.");
+                    viewAssignment(keyboard, model);
+                    break;
+                }
             }
         } //Once Not Equals To 5 Programes Runs Else Stops:
-        while (opt != 5);
+        while (opt != 6);
     }
 
     private static void doDriverMenu(Scanner keyboard, Model model) {
@@ -986,7 +1150,8 @@ public class MainApp {
             System.out.println("-2 Delete Existing Driver.");
             System.out.println("-3 Edit Existing Driver.");
             System.out.println("-4 View All Drivers.");
-            System.out.println("-5 Back To Tables.");
+            System.out.println("-5 View Single Driver.");
+            System.out.println("-6 Back To Tables.");
 
             System.out.print("-Enter Option:");
             String line = keyboard.nextLine();
@@ -997,30 +1162,36 @@ public class MainApp {
             switch (opt) {
                 //To Create A New Driver:
                 case 1: {
-                    System.out.println("-Creating A New Assignment.");
+                    System.out.println("-Creating A New Driver.");
                     createDriver(keyboard, model);
                     break;
                 }
                 //To Delete A Existing Driver:
                 case 2: {
-                    System.out.println("-Deleting A Assignment.");
+                    System.out.println("-Deleting A Driver.");
                     deleteDriver(keyboard, model);
                     break;
                 }
                 //To Update A Existing Driver: 
                 case 3: {
-                    System.out.println("-Updating A Assignment.");
+                    System.out.println("-Updating A Driver.");
                     editDriver(keyboard, model);
                     break;
                 }
                 //To View All Drivers: 
                 case 4: {
-                    System.out.println("-Viewing All Assignments.");
+                    System.out.println("-Viewing All Drivers.");
                     viewDrivers(model);
+                    break;
+                }
+                //To View Single Driver: 
+                case 5: {
+                    System.out.println("-Viewing Single Driver.");
+                    viewDriver(keyboard, model);
                     break;
                 }
             }
         } //Once Not Equals To 5 Programes Runs Else Stops:
-        while (opt != 5);
+        while (opt != 6);
     }
 }
