@@ -16,6 +16,7 @@ public class MainApp {
         String option = null;
         try {
             do {
+                //User Options:
                 System.out.println("TOUR BUS COMPANY APP");
                 System.out.println("---------------------");
                 System.out.println();
@@ -64,7 +65,7 @@ public class MainApp {
         }
     }
 
-    //Delete Methode:
+    //Delete Bus Methode:
     private static void deleteBus(Scanner keyboard, Model model) {
         try {
             int busID = getInt(keyboard, "-Enter The ID Of The Bus You Want To Delete:");
@@ -86,7 +87,7 @@ public class MainApp {
         }
     }
 
-    //Edit Code If/Else If Table Is Updated Or Not:
+    //Edit Bus Code If/Else If Table Is Updated Or Not:
     private static void editBus(Scanner kb, Model m) {
         try {
             System.out.print("-Enter The Bus ID You Want To Edit: ");
@@ -122,7 +123,7 @@ public class MainApp {
         System.out.println();
     }
 
-    //Code For Viewing All Buses:
+    //Code For Viewing All Buses By Registration No:
     private static void viewBuses1(Model model, int order) {
         List<Bus> buses = model.getBuses();
         System.out.println();
@@ -226,7 +227,7 @@ public class MainApp {
         return b;
     }
 
-    //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
+    //Edit Bus Code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editBusDetails(Scanner keyb, Bus b) {
         try {
             String registrationNo, busMake, busModel, busEngineSize, purchaseDate, dueServiceDate;
@@ -303,7 +304,7 @@ public class MainApp {
         }
     }
 
-    //Delete Methode:
+    //Delete Garage Methode:
     private static void deleteGarage(Scanner keyboard, Model model) {
         try {
             System.out.println("-Enter The ID Of The Garage You Want To Delete:");
@@ -326,7 +327,7 @@ public class MainApp {
         }
     }
 
-    //Edit Code If/Else If Table Is Updated Or Not:
+    //Edit Garage Code If/Else If Table Is Updated Or Not:
     private static void editGarage(Scanner kb, Model m) {
         try {
             System.out.print("-Enter The Garage ID You Want To Edit: ");
@@ -449,7 +450,7 @@ public class MainApp {
         return g;
     }
 
-    //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
+    //Edit Garage Code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editGarageDetails(Scanner keyb, Garage g) {
         try {
             String garageName, garageAddress, managerName;
@@ -499,7 +500,7 @@ public class MainApp {
         }
     }
 
-    //Delete Methode:
+    //Delete Service Methode:
     private static void deleteService(Scanner keyboard, Model model) {
         try {
             System.out.println("-Enter The ID Of The Service You Want To Delete:");
@@ -522,7 +523,7 @@ public class MainApp {
         }
     }
 
-    //Edit Code If/Else If Table Is Updated Or Not:
+    //Edit Service Code If/Else If Table Is Updated Or Not:
     private static void editService(Scanner kb, Model m) {
         try {
             System.out.print("-Enter The Service ID You Want To Edit: ");
@@ -626,7 +627,7 @@ public class MainApp {
         return s;
     }
 
-    //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
+    //Edit Service Code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editServiceDetails(Scanner keyb, Service s) {
         try {
             String serviceDate, jobsDone, mechanicName;
@@ -669,7 +670,7 @@ public class MainApp {
         }
     }
 
-    //Delete Methode:
+    //Delete Assignment Methode:
     private static void deleteAssignment(Scanner keyboard, Model model) {
         try {
             System.out.println("-Enter The ID Of The Assignment You Want To Delete:");
@@ -692,7 +693,7 @@ public class MainApp {
         }
     }
 
-    //Edit Code If/Else If Table Is Updated Or Not:
+    //Edit Assignment Code If/Else If Table Is Updated Or Not:
     private static void editAssignment(Scanner kb, Model m) {
         try {
             System.out.print("-Enter The Assignment ID You Want To Edit: ");
@@ -804,7 +805,7 @@ public class MainApp {
         return a;
     }
 
-    //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
+    //Edit Assignment Code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editAssignmentDetails(Scanner keyb, Assignment a) {
         try {
             String description, assignmentsDate;
@@ -844,7 +845,7 @@ public class MainApp {
         }
     }
 
-    //Delete Methode:
+    //Delete Driver Methode:
     private static void deleteDriver(Scanner keyboard, Model model) {
         try {
             System.out.println("-Enter The ID Of The Driver You Want To Delete:");
@@ -867,7 +868,7 @@ public class MainApp {
         }
     }
 
-    //Edit Code If/Else If Table Is Updated Or Not:
+    //Edit Driver Code If/Else If Table Is Updated Or Not:
     private static void editDriver(Scanner kb, Model m) {
         try {
             System.out.print("-Enter The Driver ID You Want To Edit: ");
@@ -974,7 +975,7 @@ public class MainApp {
         return d;
     }
 
-    //Edit code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
+    //Edit Driver Code (This Code Gets String From Keyboard And Places Current Info And Placement Reads New Value):
     private static void editDriverDetails(Scanner keyb, Driver d) {
         try {
             String fName, lName;
@@ -1008,6 +1009,7 @@ public class MainApp {
         return keyboard.nextLine();
     }
 
+    //GetInt Methode:
     private static int getInt(Scanner keyboard, String prompt) {
         int opt = 0;
         boolean finished = false;
@@ -1025,6 +1027,7 @@ public class MainApp {
         return opt;
     }
 
+    //Declaring Orders For Viewing;
     private static final int REGISTRATION_NO_ORDER = 1;
     private static final int GARAGE_NAME_ORDER = 1;
     private static final int JOBS_DONE_ORDER = 1;

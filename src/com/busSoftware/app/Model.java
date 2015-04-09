@@ -118,8 +118,7 @@ public class Model {
         return this.buses;
     }
     
-    //Video point 17,42mins
-    //Get Bus List Code:
+    //Get Bus List By Garage ID Code:
     public List<Bus> getBusesByGarageID(int garageID) {
         List<Bus> list = new ArrayList<Bus>();
         for (Bus b : this.buses) {
@@ -201,6 +200,7 @@ public class Model {
         return removed;
     }
 
+    //Get Garage List Code:
     public List<Garage> getGarages() {
         try {
             this.garages = this.garageGateway.getGarage();
@@ -211,7 +211,7 @@ public class Model {
         return this.garages;
     }
  
-
+    //Find Garage List Code:
     Garage findGarageByGarageID(int garageID) {
         Garage g = null;
         int i = 0;
@@ -231,7 +231,7 @@ public class Model {
         return g;
     }
 
-    //Update Bus List Code:
+    //Update Garage List Code:
     boolean updateGarage(Garage g) {
         boolean updated = false;
         
@@ -244,7 +244,6 @@ public class Model {
         
         return updated;
     }
-    
     
     /*------------------------------------------------------------------------*/
     /*-------------------------------SERVICE CODE-----------------------------*/
@@ -330,7 +329,7 @@ public class Model {
     /*------------------------------------------------------------------------*/
     /*-------------------------------ASSIGNMENTS CODE-------------------------*/
     /*------------------------------------------------------------------------*/
-    //Add Bus List Code:
+    //Add Assignment List Code:
     public boolean addAssignment(Assignment a) {
         boolean result = false;
         try {
@@ -346,7 +345,7 @@ public class Model {
         return result;
     }
     
-    //Code Delete Bus:
+    //Code Delete Assignment:
     public boolean removeAssignment(Assignment a) {
         boolean removed = false;
         
@@ -363,7 +362,7 @@ public class Model {
         return removed;
     }
     
-    //Get Bus List Code:
+    //Get Assignment List Code:
     public List<Assignment> getAssignments() {
         try {
             this.assignments = this.assignmentGateway.getAssignments();
@@ -374,7 +373,7 @@ public class Model {
         return this.assignments;
     }
 
-    //Find Bus List Code:
+    //Find Assignment List Code:
     Assignment findAssignmentByAssignmentsID(int assignmentsID) {
         Assignment a = null;
         int i = 0;
@@ -394,7 +393,7 @@ public class Model {
         return a;
     }
 
-    //Update Bus List Code:
+    //Update Assignment List Code:
     boolean updateAssignment(Assignment a) {
         boolean updated = false;
         

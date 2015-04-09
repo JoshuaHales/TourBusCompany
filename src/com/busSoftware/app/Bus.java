@@ -123,10 +123,11 @@ public class Bus implements Comparable<Bus>{
         this.assignmentsID = assignmentsID;
     }
 
-    boolean isEmpty() {
+    /*boolean isEmpty() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    }*/
 
+    //Code To Order By Registration No:
     @Override
     public int compareTo(Bus that) {
         String myRegistrationNo = this.getRegistrationNo();

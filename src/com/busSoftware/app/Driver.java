@@ -8,7 +8,7 @@ public class Driver implements Comparable<Driver>{
     private String lName;
     private int assignmentsID;
     
-    //.This Is Calling The Bus Constructor (When ID Is Present):
+    //This Is Calling The Driver Constructor (When ID Is Present):
     public Driver(int did, String fn, String ln, int aid) {
         this.driverID = did;
         this.fName = fn;
@@ -53,6 +53,7 @@ public class Driver implements Comparable<Driver>{
         this.assignmentsID = assignmentsID;
     }
     
+    //Code To Order By First Name:
     @Override
     public int compareTo(Driver that) {
         String myFName = this.getFName();

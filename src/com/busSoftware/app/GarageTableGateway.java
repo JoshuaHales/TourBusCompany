@@ -17,7 +17,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// Main BusTableGateway Class Code:
+// Main GarageTableGateway Class Code:
 public class GarageTableGateway {
     private Connection mConnection;
     
@@ -62,14 +62,14 @@ public class GarageTableGateway {
         //Rxecute The Query And Make Sure That One And Only One Row Was Inserted Into The Database:
         numRowsAffected = stmt.executeUpdate();
         if (numRowsAffected == 1) {
-            //If One Row Is Inserted, Retrieve The BusID Assigned To That Row:
+            //If One Row Is Inserted, Retrieve The GarageID Assigned To That Row:
             ResultSet keys = stmt.getGeneratedKeys();
             keys.next();
             
             id = keys.getInt(1);
         }
         
-        //Return The BusID Assigned To The Row In The Database: 
+        //Return The GarageID Assigned To The Row In The Database: 
         return id;
     }
     
@@ -81,10 +81,10 @@ public class GarageTableGateway {
         PreparedStatement stmt;
         int numRowsAffected;
         
-        //The Required SQL DELETE Statement With Place Holder For The BusID Of The Row To Be Remove From The Database:
+        //The Required SQL DELETE Statement With Place Holder For The GarageID Of The Row To Be Remove From The Database:
         query = "DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_GARAGE_ID + " = ?";
         
-        //Create A PreparedStatement Object To Execute The Wuery And Insert The BusID Into The Query:
+        //Create A PreparedStatement Object To Execute The Wuery And Insert The GarageID Into The Query:
         stmt = mConnection.prepareStatement(query);
         stmt.setInt(1, id);
         
@@ -132,7 +132,7 @@ public class GarageTableGateway {
         return garages;              
     }
 
-    //Code For Updating A Bus:
+    //Code For Updating A Garage:
     boolean updateGarage(Garage g) throws SQLException {
         //The SQL Query To Execute:
        String query;

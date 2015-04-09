@@ -8,7 +8,7 @@ public class Service implements Comparable<Service>{
     private String jobsDone;
     private String mechanicName;
     
-    //.This Is Calling The Bus Constructor (When ID Is Present):
+    //.This Is Calling The Service Constructor (When ID Is Present):
     public Service(int sid, String sd, String jd, String mn) {
         this.serviceID = sid;
         this.serviceDate = sd;
@@ -53,6 +53,7 @@ public class Service implements Comparable<Service>{
         this.mechanicName = mechanicName;
     }
 
+    //Code To Order By Jobs Done:
     @Override
     public int compareTo(Service that) {
         String myJobsDone = this.getJobsDone();

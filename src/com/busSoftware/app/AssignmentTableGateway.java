@@ -17,7 +17,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// Main BusTableGateway Class Code:
+// Main AssignmentTableGateway Class Code:
 public class AssignmentTableGateway {
     private Connection mConnection;
     
@@ -90,7 +90,7 @@ public class AssignmentTableGateway {
             id = keys.getInt(1);
         }
         
-        //Return The BusID Assigned To The Row In The Database: 
+        //Return The AssignmentID Assigned To The Row In The Database: 
         return id;
     }
     
@@ -102,7 +102,7 @@ public class AssignmentTableGateway {
         PreparedStatement stmt;
         int numRowsAffected;
         
-        //The Required SQL DELETE Statement With Place Holder For The BusID Of The Row To Be Remove From The Database:
+        //The Required SQL DELETE Statement With Place Holder For The AssignmentID Of The Row To Be Remove From The Database:
         query = "DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_ASSIGNMENTS_ID + " = ?";
         
         //Create A PreparedStatement Object To Execute The Wuery And Insert The BusID Into The Query:
@@ -116,7 +116,7 @@ public class AssignmentTableGateway {
         return (numRowsAffected == 1);
     }
     
-    //Code For Retieving All Buses For Table In The Database:
+    //Code For Retieving All Assignments For Table In The Database:
     public List<Assignment> getAssignments() throws SQLException {
         //The SQL To Execute:
         String query;
@@ -130,7 +130,7 @@ public class AssignmentTableGateway {
         String assignmentsDate, description;
         int assignmentsID, busID, driverID;
         
-        //A Bus Object Created From A Row In The Result Of The Query:
+        //A Assignment Object Created From A Row In The Result Of The Query:
         Assignment a;
         
         //Execute An SQL SELECT Statement To Get A Java.util.ResultSet Representing The Results Of The SELECT Statement:
@@ -160,7 +160,7 @@ public class AssignmentTableGateway {
         return assignments;              
     }
 
-    //Code For Updating A Bus:
+    //Code For Updating A Assignment:
     boolean updateAssignment(Assignment a) throws SQLException {
         //The SQL Query To Execute:
        String query;

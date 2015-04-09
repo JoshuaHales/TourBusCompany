@@ -15,11 +15,13 @@ public class DataBaseConnection {
     public static Connection getInstance() throws ClassNotFoundException, SQLException {
         String host, db, user, password;
         
-        //Own Database:
+        //Collage Database:
         //host = "daneel";
         //db = "N00133834";
         //user = "N00133834";
         //password = "N00133834";
+        
+        //Own Database:
         host = "localhost"; 
         db = "n00133834"; 
         user = "root"; 

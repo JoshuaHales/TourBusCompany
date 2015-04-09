@@ -17,7 +17,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// Main BusTableGateway Class Code:
+// Main DriverTableGateway Class Code:
 public class DriverTableGateway {
     private Connection mConnection;
     

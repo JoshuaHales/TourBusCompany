@@ -9,7 +9,7 @@ public class Garage implements Comparable<Garage>{
     private int garagePhoneNo;
     private String managerName;
     
-    //.This Is Calling The Bus Constructor (When ID Is Present):
+    //.This Is Calling The Garage Constructor (When ID Is Present):
     public Garage(int gid, String gn, String ga, int gpn, String mn) {
         this.garageID = gid;
         this.garageName = gn;
@@ -63,8 +63,9 @@ public class Garage implements Comparable<Garage>{
         this.managerName = managerName;
     }
 
+    //Code To Order By Garage Name:
     @Override
-   public int compareTo(Garage that) {
+    public int compareTo(Garage that) {
         String myGarageName = this.getGarageName();
         String yourGarageName = that.getGarageName();
         

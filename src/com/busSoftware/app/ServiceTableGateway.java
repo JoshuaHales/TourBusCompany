@@ -17,7 +17,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// Main BusTableGateway Class Code:
+// Main ServiceTableGateway Class Code:
 public class ServiceTableGateway {
     private Connection mConnection;
     
@@ -69,14 +69,14 @@ public class ServiceTableGateway {
         //Rxecute The Query And Make Sure That One And Only One Row Was Inserted Into The Database:
         numRowsAffected = stmt.executeUpdate();
         if (numRowsAffected == 1) {
-            //If One Row Is Inserted, Retrieve The BusID Assigned To That Row:
+            //If One Row Is Inserted, Retrieve The ServiceID Assigned To That Row:
             ResultSet keys = stmt.getGeneratedKeys();
             keys.next();
             
             id = keys.getInt(1);
         }
         
-        //Return The BusID Assigned To The Row In The Database: 
+        //Return The ServiceID Assigned To The Row In The Database: 
         return id;
     }
     
@@ -88,10 +88,10 @@ public class ServiceTableGateway {
         PreparedStatement stmt;
         int numRowsAffected;
         
-        //The Required SQL DELETE Statement With Place Holder For The BusID Of The Row To Be Remove From The Database:
+        //The Required SQL DELETE Statement With Place Holder For The ServiceID Of The Row To Be Remove From The Database:
         query = "DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_SERVICE_ID + " = ?";
         
-        //Create A PreparedStatement Object To Execute The Wuery And Insert The BusID Into The Query:
+        //Create A PreparedStatement Object To Execute The Wuery And Insert The ServiceID Into The Query:
         stmt = mConnection.prepareStatement(query);
         stmt.setInt(1, id);
         
@@ -116,7 +116,7 @@ public class ServiceTableGateway {
         String serviceDate, jobsDone, mechanicName;
         int serviceID;
         
-        //A Bus Object Created From A Row In The Result Of The Query:
+        //A Service Object Created From A Row In The Result Of The Query:
         Service s;
         
         //Execute An SQL SELECT Statement To Get A Java.util.ResultSet Representing The Results Of The SELECT Statement:
@@ -138,7 +138,7 @@ public class ServiceTableGateway {
         return services;              
     }
 
-    //Code For Updating A Bus:
+    //Code For Updating A Service:
     boolean updateService(Service s) throws SQLException {
         //The SQL Query To Execute:
        String query;

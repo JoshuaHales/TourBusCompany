@@ -9,7 +9,7 @@ public class Assignment implements Comparable<Assignment>{
     private String description;
     private String assignmentsDate;
     
-    //.This Is Calling The Bus Constructor (When ID Is Present):
+    //This Is Calling The Assignment Constructor (When ID Is Present):
     public Assignment(int aid, int bid, int did, String d, String ad) {
         this.assignmentsID = aid;
         this.busID = bid;
@@ -62,7 +62,8 @@ public class Assignment implements Comparable<Assignment>{
     public void setAssignmentsDate(String assignmentsDate){
         this.assignmentsDate = assignmentsDate;
     }
-    
+   
+    //Code To Order By Desciption:
     @Override
     public int compareTo(Assignment that) {
         String myDescription = this.getDescription();
