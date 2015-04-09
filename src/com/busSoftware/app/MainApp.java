@@ -2,6 +2,7 @@
 package com.busSoftware.app;
 
 //Imported Code Libraries:
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,8 +39,7 @@ public class MainApp {
                     doDriverMenu(keyboard, model);
                 }
             } while (!(option.equals("Exit") || option.equals("exit") || option.equals("e") || option.equals("6")));
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             System.out.println("-Incorrect Data Type Or Null Input.");
             System.out.println("Number Format Exception: " + e.getMessage() + ".\n");
         }
@@ -122,6 +122,19 @@ public class MainApp {
         System.out.println();
     }
 
+    //Code For Viewing All Buses:
+    private static void viewBuses1(Model model, int order) {
+        List<Bus> buses = model.getBuses();
+        System.out.println();
+        if (buses.isEmpty()) {
+            System.out.println("-There Are No Buses In The Database.");
+        } else {
+            Collections.sort(buses);
+            displayBuses(buses, model);
+        }
+        System.out.println();
+    }
+
     //Display Buses:
     private static void displayBuses(List<Bus> buses, Model model) {
         System.out.printf("%5s %30s %20s %20s %20s %25s %25s %25s %25s %25s %25s\n",
@@ -130,7 +143,7 @@ public class MainApp {
                 "-Bus Make-",
                 "-Bus Model-",
                 "-Bus Seats-",
-                "-Bus Engine Size-", 
+                "-Bus Engine Size-",
                 "-Purchase Date-",
                 "-Service Due Date-",
                 "-Garage Manager Name-",
@@ -337,29 +350,47 @@ public class MainApp {
         }
     }
 
-    //Code For Viewing All Garagees:
+    //Code For Viewing All Garages:
     private static void viewGarages(Model model) {
         List<Garage> garages = model.getGarages();
         System.out.println();
         if (garages.isEmpty()) {
             System.out.println("-There Are No Garages In The Database.");
         } else {
-            System.out.printf("%5s %20s %40s %30s %20s\n",
-                    "-Garage ID-",
-                    "-Garage Name-",
-                    "-Garage Address-",
-                    "-Garage Phone Number-",
-                    "-Manger Name-");
-            for (Garage pr : garages) {
-                System.out.printf("%10d %20s %40s %30d %20s\n",
-                        pr.getGarageID(),
-                        pr.getGarageName(),
-                        pr.getGarageAddress(),
-                        pr.getGaragePhoneNo(),
-                        pr.getManagerName());
-            }
+            displayGarages(garages, model);
         }
         System.out.println();
+    }
+
+    //Code For Viewing All Garages By Garage Name:
+    private static void viewGarages1(Model model, int order) {
+        List<Garage> garages = model.getGarages();
+        System.out.println();
+        if (garages.isEmpty()) {
+            System.out.println("-There Are No Garages In The Database.");
+        } else {
+            Collections.sort(garages);
+            displayGarages(garages, model);
+        }
+        System.out.println();
+    }
+
+    //Display Garages:
+    private static void displayGarages(List<Garage> garages, Model model) {
+        System.out.printf("%5s %20s %40s %30s %20s\n",
+                "-Garage ID-",
+                "-Garage Name-",
+                "-Garage Address-",
+                "-Garage Phone Number-",
+                "-Manger Name-");
+        for (Garage pr : garages) {
+            System.out.printf("%10d %20s %40s %30d %20s\n",
+                    pr.getGarageID(),
+                    pr.getGarageName(),
+                    pr.getGarageAddress(),
+                    pr.getGaragePhoneNo(),
+                    pr.getManagerName());
+        }
     }
 
     //View Single Garage Methode:
@@ -384,10 +415,10 @@ public class MainApp {
                     System.out.println("There Is No Buses Assigned To This Garage.");
                     System.out.println();
                 } else {
-                   System.out.println("There Garage Stores The Following Buses: ");
-                   System.out.println();
-                   displayBuses(busLsit, model);     
-                   System.out.println();
+                    System.out.println("There Garage Stores The Following Buses: ");
+                    System.out.println();
+                    displayBuses(busLsit, model);
+                    System.out.println();
                 }
                 System.out.println();
             } else {
@@ -522,20 +553,38 @@ public class MainApp {
         if (services.isEmpty()) {
             System.out.println("-There Are No Services In The Database.");
         } else {
-            System.out.printf("%5s %30s %20s %20s\n",
-                    "-Service ID-",
-                    "-Service Date-",
-                    "-Jobs Done-",
-                    "-Mechanic's Name-");
-            for (Service pr : services) {
-                System.out.printf("%7d %30s %20s %20s\n",
-                        pr.getServiceID(),
-                        pr.getServiceDate(),
-                        pr.getJobsDone(),
-                        pr.getMechanicName());
-            }
+            displayServices(services, model);
         }
         System.out.println();
+    }
+
+    //Code For Viewing All Services By Jobs Done:
+    private static void viewServices1(Model model, int order) {
+        List<Service> services = model.getServices();
+        System.out.println();
+        if (services.isEmpty()) {
+            System.out.println("-There Are No Services In The Database.");
+        } else {
+            Collections.sort(services);
+            displayServices(services, model);
+        }
+        System.out.println();
+    }
+
+    //Display Services:
+    private static void displayServices(List<Service> services, Model model) {
+        System.out.printf("%5s %30s %20s %20s\n",
+                "-Service ID-",
+                "-Service Date-",
+                "-Jobs Done-",
+                "-Mechanic's Name-");
+        for (Service pr : services) {
+            System.out.printf("%7d %30s %20s %20s\n",
+                    pr.getServiceID(),
+                    pr.getServiceDate(),
+                    pr.getJobsDone(),
+                    pr.getMechanicName());
+        }
     }
 
     //View Single Service Methode:
@@ -674,22 +723,40 @@ public class MainApp {
         if (assignments.isEmpty()) {
             System.out.println("-There Are No Assignment In The Database.");
         } else {
-            System.out.printf("%5s %30s %20s %20s %20s\n",
-                    "-Assignment ID-",
-                    "-Bus ID-",
-                    "-Driver ID-",
-                    "-Description-",
-                    "-Assignment Date-");
-            for (Assignment pr : assignments) {
-                System.out.printf("%7d %30d %20d %20s %20s\n",
-                        pr.getAssignmentsID(),
-                        pr.getBusID(),
-                        pr.getDriverID(),
-                        pr.getDescription(),
-                        pr.getAssignmentsDate());
-            }
+            displayAssignments(assignments, model);
         }
         System.out.println();
+    }
+
+    //Code For Viewing All Assignments By Desciption:
+    private static void viewAssignments1(Model model, int order) {
+        List<Assignment> assignments = model.getAssignments();
+        System.out.println();
+        if (assignments.isEmpty()) {
+            System.out.println("-There Are No Assignment In The Database.");
+        } else {
+            Collections.sort(assignments);
+            displayAssignments(assignments, model);
+        }
+        System.out.println();
+    }
+
+    //Display Assignments:
+    private static void displayAssignments(List<Assignment> assignments, Model model) {
+        System.out.printf("%5s %30s %20s %20s %20s\n",
+                "-Assignment ID-",
+                "-Bus ID-",
+                "-Driver ID-",
+                "-Description-",
+                "-Assignment Date-");
+        for (Assignment pr : assignments) {
+            System.out.printf("%7d %30d %20d %20s %20s\n",
+                    pr.getAssignmentsID(),
+                    pr.getBusID(),
+                    pr.getDriverID(),
+                    pr.getDescription(),
+                    pr.getAssignmentsDate());
+        }
     }
 
     //View Single Assignment Methode:
@@ -831,20 +898,38 @@ public class MainApp {
         if (drivers.isEmpty()) {
             System.out.println("-There Are No Drivers In The Database.");
         } else {
-            System.out.printf("%5s %30s %20s %20s\n",
-                    "-Driver ID-",
-                    "-First Name-",
-                    "-Last Name-",
-                    "-Assignments ID-");
-            for (Driver pr : drivers) {
-                System.out.printf("%7d %30s %20s %20d\n",
-                        pr.getDriverID(),
-                        pr.getFName(),
-                        pr.getLName(),
-                        pr.getAssignmentsID());
-            }
+            displayDrivers(drivers, model);
         }
         System.out.println();
+    }
+
+    //Code For Viewing All Drivers By First Name:
+    private static void viewDrivers1(Model model, int order) {
+        List<Driver> drivers = model.getDrivers();
+        System.out.println();
+        if (drivers.isEmpty()) {
+            System.out.println("-There Are No Drivers In The Database.");
+        } else {
+            Collections.sort(drivers);
+            displayDrivers(drivers, model);
+        }
+        System.out.println();
+    }
+
+    //Display Drivers:
+    private static void displayDrivers(List<Driver> drivers, Model model) {
+        System.out.printf("%5s %30s %20s %20s\n",
+                "-Driver ID-",
+                "-First Name-",
+                "-Last Name-",
+                "-Assignments ID-");
+        for (Driver pr : drivers) {
+            System.out.printf("%7d %30s %20s %20d\n",
+                    pr.getDriverID(),
+                    pr.getFName(),
+                    pr.getLName(),
+                    pr.getAssignmentsID());
+        }
     }
 
     //View Single Driver Methode:
@@ -922,299 +1007,338 @@ public class MainApp {
         System.out.print(prompt);
         return keyboard.nextLine();
     }
-    
+
     private static int getInt(Scanner keyboard, String prompt) {
         int opt = 0;
         boolean finished = false;
-        
+
         do {
             try {
                 System.out.println(prompt);
                 String line = keyboard.nextLine();
-                opt = Integer.parseInt(line); 
+                opt = Integer.parseInt(line);
                 finished = true;
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Exception: " + e.getMessage());
             }
-        }
-        while (!finished);
+        } while (!finished);
         return opt;
     }
+
+    private static final int REGISTRATION_NO_ORDER = 1;
+    private static final int GARAGE_NAME_ORDER = 1;
+    private static final int JOBS_DONE_ORDER = 1;
+    private static final int ASSIGNMENT_DESCPITION_ORDER = 1;
+    private static final int FIRST_NAME_ORDER = 1;
 
     private static void doBusMenu(Scanner keyboard, Model model) {
         int opt;
 
         // Do/While Loop For Possible Options, As Long As 5 Is Not Entered It Will Continue To Run:
-            do {
-                System.out.println();
-                System.out.println("-BUS TABLE");
-                System.out.println("----------");
-                System.out.println();
-                System.out.println("-1 Create A New Bus.");
-                System.out.println("-2 Delete Existing Bus.");
-                System.out.println("-3 Edit Existing Bus.");
-                System.out.println("-4 View All Buses.");
-                System.out.println("-5 View Single Bus.");
-                System.out.println("-6 Back To Tables.");
+        do {
+            System.out.println();
+            System.out.println("-BUS TABLE");
+            System.out.println("----------");
+            System.out.println();
+            System.out.println("-1 Create A New Bus.");
+            System.out.println("-2 Delete Existing Bus.");
+            System.out.println("-3 Edit Existing Bus.");
+            System.out.println("-4 View All Buses.");
+            System.out.println("-5 View Buses By Registration No.");
+            System.out.println("-6 View Single Bus.");
+            System.out.println("-7 Back To Tables.");
 
-                opt = getInt(keyboard, "Enter option: ");
+            opt = getInt(keyboard, "Enter option: ");
 
-                //If Options Is CLicked Then Break:
-                System.out.println("-You Chose Option: " + opt);
-                switch (opt) {
-                    //To Create A New Bus:
-                    case 1: {
-                        System.out.println("-Creating A New Bus.");
-                        createBus(keyboard, model);
-                        break;
-                    }
-                    //To Delete A Existing Bus:
-                    case 2: {
-                        System.out.println("-Deleting A Bus.");
-                        deleteBus(keyboard, model);
-                        break;
-                    }
-                    //To Update A Existing Bus: 
-                    case 3: {
-                        System.out.println("-Updating A Bus.");
-                        editBus(keyboard, model);
-                        break;
-                    }
-                    //To View All Buses: 
-                    case 4: {
-                        System.out.println("-Viewing All Buses.");
-                        viewBuses(model);
-                        break;
-                    }
-                    //To View All Buses: 
-                    case 5: {
-                        System.out.println("-Viewing Single Bus.");
-                        viewBus(keyboard, model);
-                        break;
-                    }
+            //If Options Is CLicked Then Break:
+            System.out.println("-You Chose Option: " + opt);
+            switch (opt) {
+                //To Create A New Bus:
+                case 1: {
+                    System.out.println("-Creating A New Bus.");
+                    createBus(keyboard, model);
+                    break;
                 }
-            } //Once Not Equals To 5 Programes Runs Else Stops:
-            while (opt != 6);
+                //To Delete A Existing Bus:
+                case 2: {
+                    System.out.println("-Deleting A Bus.");
+                    deleteBus(keyboard, model);
+                    break;
+                }
+                //To Update A Existing Bus: 
+                case 3: {
+                    System.out.println("-Updating A Bus.");
+                    editBus(keyboard, model);
+                    break;
+                }
+                //To View All Buses: 
+                case 4: {
+                    System.out.println("-Viewing All Buses.");
+                    viewBuses(model);
+                    break;
+                }
+                //To View Single Bus By Registration No: 
+                case 5: {
+                    System.out.println("-Viewing All Buses By Registration No.");
+                    viewBuses1(model, REGISTRATION_NO_ORDER);
+                    break;
+                }
+                //To View Single Bus: 
+                case 6: {
+                    System.out.println("-Viewing Single Bus.");
+                    viewBus(keyboard, model);
+                    break;
+                }
+            }
+        } //Once Not Equals To 5 Programes Runs Else Stops:
+        while (opt != 7);
     }
 
     private static void doGarageMenu(Scanner keyboard, Model model) {
         int opt;
-            // Do/While Loop For Possible Options, As Long As 5 Is Not Entered It Will Continue To Run:
-            do {
-                System.out.println();
-                System.out.println("-GARAGE TABLE");
-                System.out.println("----------");
-                System.out.println();
-                System.out.println("-1 Create A New Garage.");
-                System.out.println("-2 Delete Existing Garage.");
-                System.out.println("-3 Edit Existing Garage.");
-                System.out.println("-4 View All Garages.");
-                System.out.println("-5 View Single Garage.");
-                System.out.println("-6 Back To Tables.");
+        // Do/While Loop For Possible Options, As Long As 5 Is Not Entered It Will Continue To Run:
+        do {
+            System.out.println();
+            System.out.println("-GARAGE TABLE");
+            System.out.println("----------");
+            System.out.println();
+            System.out.println("-1 Create A New Garage.");
+            System.out.println("-2 Delete Existing Garage.");
+            System.out.println("-3 Edit Existing Garage.");
+            System.out.println("-4 View All Garages.");
+            System.out.println("-5 View All Garages By Garage Name.");
+            System.out.println("-6 View Single Garage.");
+            System.out.println("-7 Back To Tables.");
 
-                opt = getInt(keyboard, "Enter option: ");
+            opt = getInt(keyboard, "Enter option: ");
 
-                //If Options Is CLicked Then Break:
-                System.out.println("-You Chose Option: " + opt);
-                switch (opt) {
-                    //To Create A New Garage:
-                    case 1: {
-                        System.out.println("-Creating A New Garage.");
-                        createGarage(keyboard, model);
-                        break;
-                    }
-                    //To Delete A Existing Garage:
-                    case 2: {
-                        System.out.println("-Deleting A Garage.");
-                        deleteGarage(keyboard, model);
-                        break;
-                    }
-                    //To Update A Existing Garage: 
-                    case 3: {
-                        System.out.println("-Updating A Garage.");
-                        editGarage(keyboard, model);
-                        break;
-                    }
-                    //To View All Garages: 
-                    case 4: {
-                        System.out.println("-Viewing All Garages.");
-                        viewGarages(model);
-                        break;
-                    }
-                    //To View Single Garage: 
-                    case 5: {
-                        System.out.println("-Viewing Single Garage.");
-                        viewGarage(keyboard, model);
-                        break;
-                    }
+            //If Options Is CLicked Then Break:
+            System.out.println("-You Chose Option: " + opt);
+            switch (opt) {
+                //To Create A New Garage:
+                case 1: {
+                    System.out.println("-Creating A New Garage.");
+                    createGarage(keyboard, model);
+                    break;
                 }
-            } //Once Not Equals To 5 Programes Runs Else Stops:
-            while (opt != 6);
+                //To Delete A Existing Garage:
+                case 2: {
+                    System.out.println("-Deleting A Garage.");
+                    deleteGarage(keyboard, model);
+                    break;
+                }
+                //To Update A Existing Garage: 
+                case 3: {
+                    System.out.println("-Updating A Garage.");
+                    editGarage(keyboard, model);
+                    break;
+                }
+                //To View All Garages: 
+                case 4: {
+                    System.out.println("-Viewing All Garages.");
+                    viewGarages(model);
+                    break;
+                }
+                //To View All Garages By Garage Name: 
+                case 5: {
+                    System.out.println("-Viewing All Garage By Garage Name.");
+                    viewGarages1(model, GARAGE_NAME_ORDER);
+                    break;
+                }
+                //To View Single Garage: 
+                case 6: {
+                    System.out.println("-Viewing Single Garage.");
+                    viewGarage(keyboard, model);
+                    break;
+                }
+            }
+        } //Once Not Equals To 5 Programes Runs Else Stops:
+        while (opt != 7);
     }
 
     private static void doServiceMenu(Scanner keyboard, Model model) {
         int opt;
-            // Do/While Loop For Possible Options, As Long As 5 Is Not Entered It Will Continue To Run:
-            do {
-                System.out.println();
-                System.out.println("-SERIVCE TABLE");
-                System.out.println("----------");
-                System.out.println();
-                System.out.println("-1 Create A New Service.");
-                System.out.println("-2 Delete Existing Service.");
-                System.out.println("-3 Edit Existing Service.");
-                System.out.println("-4 View All Services.");
-                System.out.println("-5 View Single Service.");
-                System.out.println("-6 Back To Tables.");
+        // Do/While Loop For Possible Options, As Long As 5 Is Not Entered It Will Continue To Run:
+        do {
+            System.out.println();
+            System.out.println("-SERIVCE TABLE");
+            System.out.println("----------");
+            System.out.println();
+            System.out.println("-1 Create A New Service.");
+            System.out.println("-2 Delete Existing Service.");
+            System.out.println("-3 Edit Existing Service.");
+            System.out.println("-4 View All Services.");
+            System.out.println("-5 View All Services By Jobs Done.");
+            System.out.println("-6 View Single Service.");
+            System.out.println("-7 Back To Tables.");
 
-                opt = getInt(keyboard, "Enter option: ");
+            opt = getInt(keyboard, "Enter option: ");
 
-                //If Options Is CLicked Then Break:
-                System.out.println("-You Chose Option: " + opt);
-                switch (opt) {
-                    //To Create A New Service:
-                    case 1: {
-                        System.out.println("-Creating A New Service.");
-                        createService(keyboard, model);
-                        break;
-                    }
-                    //To Delete A Existing Service:
-                    case 2: {
-                        System.out.println("-Deleting A Service.");
-                        deleteService(keyboard, model);
-                        break;
-                    }
-                    //To Update A Existing Service: 
-                    case 3: {
-                        System.out.println("-Updating A Service.");
-                        editService(keyboard, model);
-                        break;
-                    }
-                    //To View All Services: 
-                    case 4: {
-                        System.out.println("-Viewing All Services.");
-                        viewServices(model);
-                        break;
-                    }
-                    //To View Single Service: 
-                    case 5: {
-                        System.out.println("-Viewing All Services.");
-                        viewService(keyboard, model);
-                        break;
-                    }
+            //If Options Is CLicked Then Break:
+            System.out.println("-You Chose Option: " + opt);
+            switch (opt) {
+                //To Create A New Service:
+                case 1: {
+                    System.out.println("-Creating A New Service.");
+                    createService(keyboard, model);
+                    break;
                 }
-            } //Once Not Equals To 5 Programes Runs Else Stops:
-            while (opt != 6);
+                //To Delete A Existing Service:
+                case 2: {
+                    System.out.println("-Deleting A Service.");
+                    deleteService(keyboard, model);
+                    break;
+                }
+                //To Update A Existing Service: 
+                case 3: {
+                    System.out.println("-Updating A Service.");
+                    editService(keyboard, model);
+                    break;
+                }
+                //To View All Services: 
+                case 4: {
+                    System.out.println("-Viewing All Services.");
+                    viewServices(model);
+                    break;
+                }
+                //To View All Services By Jobs Done: 
+                case 5: {
+                    System.out.println("-Viewing All Services By Jobs Done.");
+                    viewServices1(model, JOBS_DONE_ORDER);
+                    break;
+                }
+                //To View Single Service: 
+                case 6: {
+                    System.out.println("-Viewing Single Services.");
+                    viewService(keyboard, model);
+                    break;
+                }
+            }
+        } //Once Not Equals To 5 Programes Runs Else Stops:
+        while (opt != 7);
     }
 
     private static void doAssignmentMenu(Scanner keyboard, Model model) {
         int opt;
-            // Do/While Loop For Possible Options, As Long As 5 Is Not Entered It Will Continue To Run:
-            do {
-                System.out.println();
-                System.out.println("-ASSIGNMENT TABLE");
-                System.out.println("----------");
-                System.out.println();
-                System.out.println("-1 Create A New Assignment.");
-                System.out.println("-2 Delete Existing Assignment.");
-                System.out.println("-3 Edit Existing Assignment.");
-                System.out.println("-4 View All Assignments.");
-                System.out.println("-5 View Single Assignment.");
-                System.out.println("-6 Back To Tables.");
+        // Do/While Loop For Possible Options, As Long As 5 Is Not Entered It Will Continue To Run:
+        do {
+            System.out.println();
+            System.out.println("-ASSIGNMENT TABLE");
+            System.out.println("----------");
+            System.out.println();
+            System.out.println("-1 Create A New Assignment.");
+            System.out.println("-2 Delete Existing Assignment.");
+            System.out.println("-3 Edit Existing Assignment.");
+            System.out.println("-4 View All Assignments.");
+            System.out.println("-5 View All Assignments By Description.");
+            System.out.println("-6 View Single Assignment.");
+            System.out.println("-7 Back To Tables.");
 
-                opt = getInt(keyboard, "Enter option: ");
+            opt = getInt(keyboard, "Enter option: ");
 
-                //If Options Is CLicked Then Break:
-                System.out.println("-You Chose Option: " + opt);
-                switch (opt) {
-                    //To Create A New Assignment:
-                    case 1: {
-                        System.out.println("-Creating A New Assignment.");
-                        createAssignment(keyboard, model);
-                        break;
-                    }
-                    //To Delete A Existing Assignment:
-                    case 2: {
-                        System.out.println("-Deleting A Assignment.");
-                        deleteAssignment(keyboard, model);
-                        break;
-                    }
-                    //To Update A Existing Assignment: 
-                    case 3: {
-                        System.out.println("-Updating A Assignment.");
-                        editAssignment(keyboard, model);
-                        break;
-                    }
-                    //To View All Assignments: 
-                    case 4: {
-                        System.out.println("-Viewing All Assignments.");
-                        viewAssignments(model);
-                        break;
-                    }
-                    //To View All Assignments: 
-                    case 5: {
-                        System.out.println("-Viewing Single Assignment.");
-                        viewAssignment(keyboard, model);
-                        break;
-                    }
+            //If Options Is CLicked Then Break:
+            System.out.println("-You Chose Option: " + opt);
+            switch (opt) {
+                //To Create A New Assignment:
+                case 1: {
+                    System.out.println("-Creating A New Assignment.");
+                    createAssignment(keyboard, model);
+                    break;
                 }
-            } //Once Not Equals To 5 Programes Runs Else Stops:
-            while (opt != 6);
+                //To Delete A Existing Assignment:
+                case 2: {
+                    System.out.println("-Deleting A Assignment.");
+                    deleteAssignment(keyboard, model);
+                    break;
+                }
+                //To Update A Existing Assignment: 
+                case 3: {
+                    System.out.println("-Updating A Assignment.");
+                    editAssignment(keyboard, model);
+                    break;
+                }
+                //To View All Assignments: 
+                case 4: {
+                    System.out.println("-Viewing All Assignments.");
+                    viewAssignments(model);
+                    break;
+                }
+                //To View All Assignments By Description: 
+                case 5: {
+                    System.out.println("-Viewing All Assignment By Description.");
+                    viewAssignments1(model, ASSIGNMENT_DESCPITION_ORDER);
+                    break;
+                }
+                //To View Single Assignment: 
+                case 6: {
+                    System.out.println("-Viewing Single Assignment.");
+                    viewAssignment(keyboard, model);
+                    break;
+                }
+            }
+        } //Once Not Equals To 5 Programes Runs Else Stops:
+        while (opt != 7);
     }
 
     private static void doDriverMenu(Scanner keyboard, Model model) {
         int opt;
-            // Do/While Loop For Possible Options, As Long As 5 Is Not Entered It Will Continue To Run:
-            do {
-                System.out.println();
-                System.out.println("-DRIVER TABLE");
-                System.out.println("----------");
-                System.out.println();
-                System.out.println("-1 Create A New Driver.");
-                System.out.println("-2 Delete Existing Driver.");
-                System.out.println("-3 Edit Existing Driver.");
-                System.out.println("-4 View All Drivers.");
-                System.out.println("-5 View Single Driver.");
-                System.out.println("-6 Back To Tables.");
+        // Do/While Loop For Possible Options, As Long As 5 Is Not Entered It Will Continue To Run:
+        do {
+            System.out.println();
+            System.out.println("-DRIVER TABLE");
+            System.out.println("----------");
+            System.out.println();
+            System.out.println("-1 Create A New Driver.");
+            System.out.println("-2 Delete Existing Driver.");
+            System.out.println("-3 Edit Existing Driver.");
+            System.out.println("-4 View All Drivers.");
+            System.out.println("-5 View All Drivers By First Name.");
+            System.out.println("-6 View Single Driver.");
+            System.out.println("-7 Back To Tables.");
 
-                opt = getInt(keyboard, "Enter option: ");
+            opt = getInt(keyboard, "Enter option: ");
 
-                //If Options Is CLicked Then Break:
-                System.out.println("-You Chose Option: " + opt);
-                switch (opt) {
-                    //To Create A New Driver:
-                    case 1: {
-                        System.out.println("-Creating A New Driver.");
-                        createDriver(keyboard, model);
-                        break;
-                    }
-                    //To Delete A Existing Driver:
-                    case 2: {
-                        System.out.println("-Deleting A Driver.");
-                        deleteDriver(keyboard, model);
-                        break;
-                    }
-                    //To Update A Existing Driver: 
-                    case 3: {
-                        System.out.println("-Updating A Driver.");
-                        editDriver(keyboard, model);
-                        break;
-                    }
-                    //To View All Drivers: 
-                    case 4: {
-                        System.out.println("-Viewing All Drivers.");
-                        viewDrivers(model);
-                        break;
-                    }
-                    //To View Single Driver: 
-                    case 5: {
-                        System.out.println("-Viewing Single Driver.");
-                        viewDriver(keyboard, model);
-                        break;
-                    }
+            //If Options Is CLicked Then Break:
+            System.out.println("-You Chose Option: " + opt);
+            switch (opt) {
+                //To Create A New Driver:
+                case 1: {
+                    System.out.println("-Creating A New Driver.");
+                    createDriver(keyboard, model);
+                    break;
                 }
-            } //Once Not Equals To 5 Programes Runs Else Stops:
-            while (opt != 6);
+                //To Delete A Existing Driver:
+                case 2: {
+                    System.out.println("-Deleting A Driver.");
+                    deleteDriver(keyboard, model);
+                    break;
+                }
+                //To Update A Existing Driver: 
+                case 3: {
+                    System.out.println("-Updating A Driver.");
+                    editDriver(keyboard, model);
+                    break;
+                }
+                //To View All Drivers: 
+                case 4: {
+                    System.out.println("-Viewing All Drivers.");
+                    viewDrivers(model);
+                    break;
+                }
+                //To View Single Driver By First Name: 
+                case 5: {
+                    System.out.println("-Viewing Single Driver By First Name.");
+                    viewDrivers1(model, FIRST_NAME_ORDER);
+                    break;
+                }
+                //To View Single Driver: 
+                case 6: {
+                    System.out.println("-Viewing Single Driver.");
+                    viewDriver(keyboard, model);
+                    break;
+                }
+            }
+        } //Once Not Equals To 5 Programes Runs Else Stops:
+        while (opt != 7);
     }
 }

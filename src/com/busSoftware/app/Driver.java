@@ -2,7 +2,7 @@
 package com.busSoftware.app;
 
 //Declaring The Varibles:
-public class Driver {
+public class Driver implements Comparable<Driver>{
     private int driverID;
     private String fName;
     private String lName;
@@ -51,5 +51,13 @@ public class Driver {
     }
     public void setAssignmentsID(int assignmentsID){
         this.assignmentsID = assignmentsID;
+    }
+    
+    @Override
+    public int compareTo(Driver that) {
+        String myFName = this.getFName();
+        String yourFName = that.getFName();
+        
+        return myFName.compareTo(yourFName);
     }
 }

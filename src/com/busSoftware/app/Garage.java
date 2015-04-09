@@ -2,7 +2,7 @@
 package com.busSoftware.app;
 
 //Declaring The Varibles:
-public class Garage {
+public class Garage implements Comparable<Garage>{
     private int garageID;
     private String garageName;
     private String garageAddress;
@@ -63,4 +63,11 @@ public class Garage {
         this.managerName = managerName;
     }
 
+    @Override
+   public int compareTo(Garage that) {
+        String myGarageName = this.getGarageName();
+        String yourGarageName = that.getGarageName();
+        
+        return myGarageName.compareTo(yourGarageName);
+    }
 }

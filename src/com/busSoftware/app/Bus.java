@@ -2,7 +2,7 @@
 package com.busSoftware.app;
 
 //Declaring The Varibles:
-public class Bus {
+public class Bus implements Comparable<Bus>{
     private int busID;
     private String registrationNo;
     private String busMake;
@@ -125,5 +125,13 @@ public class Bus {
 
     boolean isEmpty() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int compareTo(Bus that) {
+        String myRegistrationNo = this.getRegistrationNo();
+        String yourRegistrationNo = that.getRegistrationNo();
+        
+        return myRegistrationNo.compareTo(yourRegistrationNo);
     }
 }

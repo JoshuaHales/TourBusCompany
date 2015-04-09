@@ -2,7 +2,7 @@
 package com.busSoftware.app;
 
 //Declaring The Varibles:
-public class Service {
+public class Service implements Comparable<Service>{
     private int serviceID;
     private String serviceDate;
     private String jobsDone;
@@ -53,4 +53,11 @@ public class Service {
         this.mechanicName = mechanicName;
     }
 
+    @Override
+    public int compareTo(Service that) {
+        String myJobsDone = this.getJobsDone();
+        String yourJobsDone = that.getJobsDone();
+        
+        return myJobsDone.compareTo(yourJobsDone);
+    }
 }

@@ -2,7 +2,7 @@
 package com.busSoftware.app;
 
 //Declaring The Varibles:
-public class Assignment {
+public class Assignment implements Comparable<Assignment>{
     private int assignmentsID;
     private int busID;
     private int driverID;
@@ -61,5 +61,13 @@ public class Assignment {
     }
     public void setAssignmentsDate(String assignmentsDate){
         this.assignmentsDate = assignmentsDate;
+    }
+    
+    @Override
+    public int compareTo(Assignment that) {
+        String myDescription = this.getDescription();
+        String yourDescription = that.getDescription();
+        
+        return myDescription.compareTo(yourDescription);
     }
 }
